@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import {Router} from "react-router-dom";
 import history from './history';
-import './index.css';
+import './scss/app.scss';
 
 const app = (
     <Router history={history}>
