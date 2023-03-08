@@ -22,17 +22,17 @@ const Header = () => {
                     </div>
 
                     <div className="header__list">
-                        <ul>
-                            <Link to="/score-board">
-                                <li>Score board</li>
-                            </Link>
-                            <Link to="/practice">
-                                <li>Practice</li>
-                            </Link>
-                            <Link to="/enter-competition">
-                                <li className="header__list-last">Enter a CTF competition</li>
-                            </Link>
-                        </ul>
+                        {/*<ul>*/}
+                        {/*    <Link to="/score-board">*/}
+                        {/*        <li>Score board</li>*/}
+                        {/*    </Link>*/}
+                        {/*    <Link to="/practice">*/}
+                        {/*        <li>Practice</li>*/}
+                        {/*    </Link>*/}
+                        {/*    <Link to="/enter-competition">*/}
+                        {/*        <li className="header__list-last">Enter a CTF competition</li>*/}
+                        {/*    </Link>*/}
+                        {/*</ul>*/}
                     </div>
 
                     <Anonymous/>

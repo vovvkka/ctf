@@ -15,7 +15,7 @@ const Anonymous = () => {
 
             <Link to="/register">
                 <li>
-                    Register
+                    Sign Up
                 </li>
             </Link>
         </ul>
