@@ -60,4 +60,12 @@
       padding-right: 30px;
     }
   }
+
+  &__dropdown {
+    cursor: pointer;
+
+    &-user {
+      font-size: 18px;
+    }
+  }
 }

@@ -2,8 +2,11 @@ import React from 'react';
 import logo from "../../../assets/logo.png";
 import {Link} from "react-router-dom";
 import Anonymous from "../Anonymous/Anonymous";
+import {useSelector} from "react-redux";
 
 const Header = () => {
+    const user = useSelector(state => state.users.user);
+
     return (
         <div className="header">
             <div className="container-sm">
@@ -22,17 +25,20 @@ const Header = () => {
                     </div>
 
                     <div className="header__list">
-                        {/*<ul>*/}
-                        {/*    <Link to="/score-board">*/}
-                        {/*        <li>Score board</li>*/}
-                        {/*    </Link>*/}
-                        {/*    <Link to="/practice">*/}
-                        {/*        <li>Practice</li>*/}
-                        {/*    </Link>*/}
-                        {/*    <Link to="/enter-competition">*/}
-                        {/*        <li className="header__list-last">Enter a CTF competition</li>*/}
-                        {/*    </Link>*/}
-                        {/*</ul>*/}
+                        {
+                            user ?
+                                <ul>
+                                    <Link to="/score-board">
+                                        <li>Score board</li>
+                                    </Link>
+                                    <Link to="/practice">
+                                        <li>Practice</li>
+                                    </Link>
+                                    <Link to="/enter-competition">
+                                        <li className="header__list-last">Enter a CTF competition</li>
+                                    </Link>
+                                </ul> : null
+                        }
                     </div>
 
                     <Anonymous/>

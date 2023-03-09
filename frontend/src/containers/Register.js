@@ -17,7 +17,8 @@ const Register = () => {
 
     const [isShow, setIsShow] = useState(false);
 
-    const onSubmit = async () => {
+    const onSubmit = async e => {
+        e.preventDefault();
         await dispatch(registerUser({...user}));
     };
 

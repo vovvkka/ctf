@@ -14,7 +14,8 @@ const Login = () => {
     });
     const [isShow, setIsShow] = useState(false);
 
-    const onSubmit = () => {
+    const onSubmit = e => {
+        e.preventDefault();
         dispatch(loginUser({...user}));
     };
 
