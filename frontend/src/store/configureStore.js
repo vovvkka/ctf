@@ -3,32 +3,31 @@ import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import axiosApi from "../axiosApi";
 import thunk from "redux-thunk";
+import usersSlice from "./slices/usersSlice";
+import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 
 const rootReducer = combineReducers({
-
+    users: usersSlice.reducer,
 });
 
-// const persistedState = loadFromLocalStorage();
+const persistedState = loadFromLocalStorage();
 const middleware = [thunk];
 
 const store = configureStore({
     reducer: rootReducer,
     middleware,
     devTools: true,
-    // preloadedState: persistedState,
+    preloadedState: persistedState,
 });
 
 
-// store.subscribe(() => {
-//     saveToLocalStorage({
-//         users: {
-//             user: store.getState().users.user,
-//         },
-//         cart: {
-//             products: store.getState().cart.products,
-//         },
-//     });
-// });
+store.subscribe(() => {
+    saveToLocalStorage({
+        users: {
+            user: store.getState().users.user,
+        },
+    });
+});
 
 axiosApi.interceptors.request.use(config => {
     try {

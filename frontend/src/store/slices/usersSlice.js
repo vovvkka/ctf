@@ -1,0 +1,96 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+const name = 'users';
+
+export const initialState = {
+    user: null,
+    loginLoading: false,
+    loginError: null,
+    forgotLoading: false,
+    forgotError: null,
+    registerLoading: false,
+    registerError: null,
+    logoutLoading: false,
+    logoutError: null,
+    loading: false,
+    error: null,
+};
+
+const usersSlice = createSlice({
+    name,
+    initialState,
+    reducers: {
+        registerRequest(state) {
+            state.registerLoading = true;
+            state.registerError = null;
+        },
+        registerSuccess(state, action) {
+            state.registerLoading = false;
+            state.user = action.payload;
+        },
+        registerFailure(state, action) {
+            state.registerLoading = false;
+            state.registerError = action.payload;
+        },
+        loginRequest(state) {
+            state.loginLoading = true;
+            state.loginError = null;
+        },
+        loginSuccess(state, action) {
+            state.loginLoading = false;
+            state.user = action.payload;
+        },
+        loginFailure(state, action) {
+            state.loginLoading = false;
+            state.loginError = action.payload;
+        },
+        logoutRequest(state) {
+            state.logoutLoading = true;
+            state.logoutError = null;
+        },
+        logoutSuccess(state) {
+            state.logoutLoading = false;
+            state.user = null;
+        },
+        logoutFailure(state, action) {
+            state.logoutLoading = false;
+            state.logoutError = action.payload;
+        },
+        forgotPasswordRequest(state) {
+            state.forgotLoading = true;
+            state.forgotError = null;
+        },
+        // forgotPasswordSuccess(state) {
+        //     state.forgotLoading = false;
+        // },
+        // forgotPasswordFailure(state, action) {
+        //     state.forgotLoading = false;
+        //     state.forgotError = action.payload;
+        // },
+        // resetPasswordRequest(state) {
+        //     state.loginLoading = true;
+        //     state.loginError = null;
+        // },
+        // resetPasswordSuccess(state) {
+        //     state.loginLoading = false;
+        // },
+        // resetPasswordFailure(state, action) {
+        //     state.loginLoading = false;
+        //     state.loginError = action.payload;
+        // },
+    },
+});
+
+export const {
+    registerRequest,
+    registerSuccess,
+    registerFailure,
+    loginRequest,
+    loginSuccess,
+    loginFailure,
+    logoutRequest,
+    logoutSuccess,
+    logoutFailure,
+} = usersSlice.actions;
+
+export default usersSlice;
