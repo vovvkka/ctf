@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const {compare, genSalt, hash} = require('bcrypt');
-const {nanoid} = require('nanoid');
+const { nanoid } = require('nanoid');
 
 const Schema = mongoose.Schema;
 const SALT_WORK_FACTOR = 10;
@@ -36,7 +36,7 @@ const UserSchema = new Schema({
             message: "Max character length - 15"
         }
     }],
-    lastName: [{
+    lastname: [{
         type: String,
         required: true,
         validate: {
