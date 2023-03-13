@@ -27,23 +27,35 @@ const validatePasswordLength = password => {
     return password.length > 5;
 };
 
+const MultiUsers = new Schema({
+    username: {
+        type: String,
+        required: true,
+        validate: {
+            validator: validateUsernameLength,
+            message: "Max character length - 15"
+        }
+    },
+    lastname: {
+        type: String,
+        required: true,
+        validate: {
+            validator: validateUsernameLength,
+            message: "Max character length - 15"
+        }
+    },
+    email: {
+        type: String,
+        required: true,
+        validate: [{
+            validator: validateEmail,
+            message: 'Invalid e-mail address'
+        }]
+    },
+})
+
 const UserSchema = new Schema({
-    username: [{
-        type: String,
-        required: true,
-        validate: {
-            validator: validateUsernameLength,
-            message: "Max character length - 15"
-        }
-    }],
-    lastname: [{
-        type: String,
-        required: true,
-        validate: {
-            validator: validateUsernameLength,
-            message: "Max character length - 15"
-        }
-    }],
+    users: [MultiUsers],
     email: {
         type: String,
         required: true,

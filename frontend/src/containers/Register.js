@@ -8,8 +8,7 @@ import {registerUser} from "../store/actions/usersActions";
 const Register = () => {
     const dispatch = useDispatch();
     const [user, setUser] = useState({
-        username: [""],
-        lastname: [""],
+        users: [{username: "", lastname: "", email: ""}],
         teamName: "",
         email: "",
         password: "",
@@ -26,17 +25,14 @@ const Register = () => {
         const {name, value} = e.target;
 
         setUser((prev) => {
-            const newArr = prev[name].map((item, i) => {
-                if (index === i) {
-                    return value;
-                }
 
-                return item;
-            });
+            prev.users[index] = {...prev.users[index], [name]: value};
 
             return {
                 ...prev,
-                [name]: newArr,
+                users: [
+                    ...prev.users,
+                ]
             };
         });
     };
@@ -49,8 +45,7 @@ const Register = () => {
     const addInputHandler = () => {
         setUser((prev) => ({
             ...prev,
-            username: [...prev["username"], ''],
-            lastname: [...prev["lastname"], ""]
+            users: [...prev.users, {username: "", lastname: "", email: ""}],
         }));
     };
 
@@ -64,17 +59,16 @@ const Register = () => {
                 <div className="container-xs">
                     <div className="register__block">
                         {
-                            user.username?.map((us, idx) => (
-                                <div className="register__row-block" key={us + idx}>
+                            user.users.map((user, idx) => (
+                                <div className="register__row-block" key={idx}>
                                     <div className="register__input-block-row">
                                         <label>User {idx + 1}*</label>
                                         <input
                                             name="username"
                                             className="register__input"
-                                            value={user.username[idx]}
+                                            value={user.username}
                                             onChange={e => multipleChangeHandler(e, idx)}
                                             placeholder="First Name"
-                                            autoFocus
                                             required
                                         />
                                     </div>
@@ -84,9 +78,22 @@ const Register = () => {
                                         <input
                                             name="lastname"
                                             className="register__input"
-                                            value={user.lastname[idx]}
+                                            value={user.lastname}
                                             onChange={e => multipleChangeHandler(e, idx)}
                                             placeholder="Last Name"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="register__input-block-row">
+                                        <label>User e-mail*</label>
+                                        <input
+                                            name="email"
+                                            type="email"
+                                            className="register__input"
+                                            value={user.email}
+                                            onChange={e => multipleChangeHandler(e, idx)}
+                                            placeholder="User E-mail"
                                             required
                                         />
                                     </div>
@@ -106,7 +113,7 @@ const Register = () => {
                         </div>
 
                         <div className="register__input-block">
-                            <label>Email</label>
+                            <label>Team e-mail</label>
                             <input
                                 type="email"
                                 name="email"
@@ -142,9 +149,8 @@ const Register = () => {
                             <button
                                 type="button"
                                 className="register__add-user-btn"
-                                disabled={user.username.length > 4}
+                                disabled={user.users.length > 4}
                                 onClick={addInputHandler}
-                                autoFocus={false}
                             >
                                 Add another member
                             </button>
