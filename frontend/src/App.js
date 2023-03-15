@@ -1,17 +1,33 @@
 import React from 'react';
 import Layout from "./components/UI/Layout/Layout";
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import HomePage from "./containers/HomePage";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
+import {useSelector} from "react-redux";
+import AdminPractice from "./containers/AdminPractice";
+
+const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
+    return isAllowed ? <Route {...props} /> : <Redirect to="/" />;
+};
 
 const App = () => {
+    const user = useSelector(state => state.users.user);
+
     return (
         <Layout>
             <Switch>
                 <Route path="/" component={HomePage} exact />
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
+
+                <ProtectedRoute
+                    path="/admin-practice"
+                    component={AdminPractice}
+                    isAllowed={user?.role === "admin"}
+                    redirectTo="/"
+                    exact
+                />
             </Switch>
         </Layout>
     );

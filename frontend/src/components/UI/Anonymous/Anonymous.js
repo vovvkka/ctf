@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {DownOutlined, UserOutlined} from "@ant-design/icons";
@@ -6,28 +6,46 @@ import {Dropdown, Space} from "antd";
 import {logoutUser} from "../../../store/actions/usersActions";
 
 
-
-
 const Anonymous = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
-    // const matches = useMediaQuery({ maxWidth: 768 });
+    const [items, setItems] = useState([]);
 
     const onLogout = async () => {
         await dispatch(logoutUser());
     }
 
-    const items = [
-        {
-            label: <p onClick={onLogout}>Logout</p>,
-            key: '0',
-        },
-    ];
+
+    // const matches = useMediaQuery({ maxWidth: 768 });
+
+
+    useEffect(() => {
+        if (user?.role === "admin") {
+            setItems([
+                {
+                    label: <Link to="/admin-practice">Admin Practice</Link>,
+                    key: '0'
+                },
+                {
+                    label: <p onClick={onLogout}>Logout</p>,
+                    key: '1',
+                }
+            ]);
+        } else {
+            setItems([
+                {
+                    label: <p onClick={onLogout}>Logout</p>,
+                    key: '0',
+                }
+            ]);
+        }
+    }, [user?.role])
+
 
     return (
         <ul className="header__menu">
             {
-                !user ? (
+                !user ?
                     <>
                         <Link to="/login">
                             <li>
@@ -41,7 +59,7 @@ const Anonymous = () => {
                             </li>
                         </Link>
                     </>
-                ) : (
+                    :
                     <Dropdown menu={{items}} trigger={['click']}>
                         <li
                             onClick={(e) => e.preventDefault()}
@@ -49,12 +67,12 @@ const Anonymous = () => {
                         >
                             <Space>
                                 <p className="header__dropdown-user">{user.teamName}</p>
-                                <UserOutlined />
+                                <UserOutlined/>
                                 <DownOutlined/>
                             </Space>
                         </li>
                     </Dropdown>
-                )
+
             }
 
         </ul>
