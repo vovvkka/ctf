@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import Backdrop from "../Backdrop/Backdrop";
 import {Button, message, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
+import {useDispatch} from "react-redux";
+import {createChallenge} from "../../../store/actions/challengesActions";
 
 const Modal = ({show, closed, challenge}) => {
-
+    const dispatch = useDispatch();
     const [challengeData, setChallengeData] = useState({
         title: "",
         category: "First-Timers",
@@ -25,7 +27,7 @@ const Modal = ({show, closed, challenge}) => {
             authorization: 'authorization-text',
         },
         onChange(info) {
-            setChallengeData(prev => ({...prev, file: info.file}));
+            setChallengeData(prev => ({...prev, file: info.file.originFileObj}));
 
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`).then(r => r);
@@ -42,6 +44,21 @@ const Modal = ({show, closed, challenge}) => {
 
     const onCloseModal = () => {
         closed();
+    };
+
+    const submitFormHandler = async e => {
+        e.preventDefault();
+
+        if (challenge) {
+            const formData = new FormData();
+
+            Object.keys(challengeData).forEach((key) => {
+                formData.append(key, challengeData[key]);
+            });
+
+            await dispatch(createChallenge(formData));
+            onCloseModal();
+        }
     };
 
     let children = null;
@@ -76,7 +93,7 @@ const Modal = ({show, closed, challenge}) => {
                 </div>
 
                 <div className="modal__input-block">
-                    <label>Description</label>
+                    <label>Description *</label>
                     <textarea
                         name="description"
                         autoComplete="off"
@@ -94,7 +111,6 @@ const Modal = ({show, closed, challenge}) => {
                             className="modal__input"
                             value={challengeData.hint1}
                             onChange={inputChallengeChangeHandler}
-                            required
                         />
                     </div>
 
@@ -120,7 +136,6 @@ const Modal = ({show, closed, challenge}) => {
                             className="modal__input"
                             value={challengeData.hint2}
                             onChange={inputChallengeChangeHandler}
-                            required
                         />
                     </div>
 
@@ -131,7 +146,6 @@ const Modal = ({show, closed, challenge}) => {
                             className="modal__input"
                             value={challengeData.hint3}
                             onChange={inputChallengeChangeHandler}
-                            required
                         />
                     </div>
                 </div>
@@ -169,7 +183,7 @@ const Modal = ({show, closed, challenge}) => {
                     opacity: show ? '1' : '0',
                 }}
             >
-                <form autoComplete="off">
+                <form autoComplete="off" onSubmit={submitFormHandler}>
                     <div className="modal__header">
                         <h2 className="modal__title">
                             {challenge && "Add new Challenge"}

@@ -27,6 +27,7 @@ const ChallengeSchema = new Schema({
         enum: ["Practice", "Competition"],
         default: "Practice",
     },
+    file: String,
     result: {
         type: String,
         required: true,

@@ -5,9 +5,11 @@ import axiosApi from "../axiosApi";
 import thunk from "redux-thunk";
 import usersSlice from "./slices/usersSlice";
 import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
+import challengesSlice from "./slices/challengesSlice";
 
 const rootReducer = combineReducers({
     users: usersSlice.reducer,
+    challenges: challengesSlice.reducer
 });
 
 const persistedState = loadFromLocalStorage();
