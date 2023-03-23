@@ -58,6 +58,19 @@ const Modal = ({show, closed, challenge}) => {
 
             await dispatch(createChallenge(formData));
             onCloseModal();
+
+            setChallengeData({
+                title: "",
+                category: "First-Timers",
+                description: "",
+                points: 1,
+                type: "",
+                file: "",
+                result: "",
+                hint1: "",
+                hint2: "",
+                hint3: "",
+            });
         }
     };
 

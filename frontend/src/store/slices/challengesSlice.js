@@ -41,6 +41,9 @@ const challengesSlice = createSlice({
 });
 
 export const {
+    fetchChallengesRequest,
+    fetchChallengesSuccess,
+    fetchChallengesFailure,
     createChallengeRequest,
     createChallengeSuccess,
     createChallengeFailure

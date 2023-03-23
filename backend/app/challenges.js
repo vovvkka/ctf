@@ -19,6 +19,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+router.get('/', async (req, res) => {
+    try {
+        const {category, title} = req.query;
+        const query = {};
+
+        if (category) query.category = category;
+        if (title) query.title = { $regex: title, $options: 'i' };
+
+        const challenges = await Challenge.find(query);
+        res.send(challenges);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) => {
         try {
             const {title, category, description, points, result, hint1, hint2, hint3} = req.body;

@@ -1,6 +1,31 @@
 import axiosApi from '../../axiosApi';
-import {createChallengeFailure, createChallengeRequest, createChallengeSuccess} from "../slices/challengesSlice";
+import {
+    createChallengeFailure,
+    createChallengeRequest,
+    createChallengeSuccess,
+    fetchChallengesFailure, fetchChallengesRequest, fetchChallengesSuccess
+} from "../slices/challengesSlice";
 import {addNotification} from "./notifierActions";
+
+export const fetchChallenges = query => {
+    return async dispatch => {
+        try {
+            dispatch(fetchChallengesRequest());
+
+            let response;
+
+            if (query) {
+                response = await axiosApi.get('/challenges' + query);
+            } else {
+                response = await axiosApi.get('/challenges');
+            }
+
+            dispatch(fetchChallengesSuccess(response.data));
+        } catch (e) {
+            dispatch(fetchChallengesFailure(e));
+        }
+    };
+};
 
 export const createChallenge = challengeData => {
     return async dispatch => {
