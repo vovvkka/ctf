@@ -37,6 +37,31 @@ const challengesSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        editChallengeRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        editChallengeSuccess(state, action) {
+            state.loading = false;
+            const idx = state.challenges.findIndex(c => c._id === action.payload.id);
+            state.challenges[idx] = action.payload.challengeData;
+        },
+        editChallengeFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        deleteChallengeRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        deleteChallengeSuccess(state, action) {
+            state.loading = false;
+            state.challenges = [...state.challenges.filter(c => c._id !== action.payload)];
+        },
+        deleteChallengeFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
@@ -46,7 +71,13 @@ export const {
     fetchChallengesFailure,
     createChallengeRequest,
     createChallengeSuccess,
-    createChallengeFailure
+    createChallengeFailure,
+    editChallengeRequest,
+    editChallengeSuccess,
+    editChallengeFailure,
+    deleteChallengeRequest,
+    deleteChallengeSuccess,
+    deleteChallengeFailure
 } = challengesSlice.actions;
 
 export default challengesSlice;

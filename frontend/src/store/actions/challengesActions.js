@@ -3,7 +3,13 @@ import {
     createChallengeFailure,
     createChallengeRequest,
     createChallengeSuccess,
-    fetchChallengesFailure, fetchChallengesRequest, fetchChallengesSuccess
+    deleteChallengeFailure,
+    deleteChallengeRequest,
+    deleteChallengeSuccess, editChallengeFailure,
+    editChallengeRequest, editChallengeSuccess,
+    fetchChallengesFailure,
+    fetchChallengesRequest,
+    fetchChallengesSuccess
 } from "../slices/challengesSlice";
 import {addNotification} from "./notifierActions";
 
@@ -44,6 +50,38 @@ export const createChallenge = challengeData => {
                 dispatch(createChallengeFailure({global: 'No internet'}));
                 throw e;
             }
+        }
+    };
+};
+
+export const editChallenge = (id, formData, challengeData) => {
+    return async dispatch => {
+        try {
+            dispatch(editChallengeRequest());
+
+            await axiosApi.put("/challenges/" + id, formData);
+
+            dispatch(editChallengeSuccess({id, challengeData}));
+        } catch (e) {
+            if (e.response && e.response.data) {
+                dispatch(editChallengeFailure(e.response.data));
+            } else {
+                dispatch(editChallengeFailure({global: 'No internet'}));
+            }
+        }
+    };
+};
+
+export const deleteChallenge = id => {
+    return async (dispatch) => {
+        try {
+            dispatch(deleteChallengeRequest());
+
+            await axiosApi.delete(`/challenges/${id}`);
+
+            dispatch(deleteChallengeSuccess(id));
+        } catch (e) {
+            dispatch(deleteChallengeFailure(e));
         }
     };
 };

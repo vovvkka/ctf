@@ -1,0 +1,64 @@
+@import "../variables";
+
+.challenge {
+  width: 260px;
+  background: $white;
+  padding: 22px 10px 90px 10px;
+
+  margin-bottom: 30px;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      color: #293045;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.6px;
+    }
+  }
+
+  &__middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    word-break: break-word;
+    margin-top: 30px;
+    color: #293045;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+  }
+
+  &__buttons {
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__btn {
+    padding: 4px 5px;
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    &-edit {
+      color: #16965a;
+    }
+
+    &-delete {
+      color: #c02a35;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

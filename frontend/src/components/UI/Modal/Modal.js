@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Backdrop from "../Backdrop/Backdrop";
 import {Button, message, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {createChallenge} from "../../../store/actions/challengesActions";
+import {createChallenge, editChallenge} from "../../../store/actions/challengesActions";
 
-const Modal = ({show, closed, challenge}) => {
+const Modal = ({show, closed, challenge, cData, isEdit}) => {
     const dispatch = useDispatch();
     const [challengeData, setChallengeData] = useState({
         title: "",
@@ -19,6 +19,12 @@ const Modal = ({show, closed, challenge}) => {
         hint2: "",
         hint3: "",
     });
+
+    useEffect(() => {
+        if (isEdit) {
+            setChallengeData(cData);
+        }
+    }, [cData, challenge, isEdit]);
 
     const props = {
         name: 'file',
@@ -43,6 +49,19 @@ const Modal = ({show, closed, challenge}) => {
     };
 
     const onCloseModal = () => {
+        setChallengeData({
+            title: "",
+            category: "First-Timers",
+            description: "",
+            points: 1,
+            type: "",
+            file: "",
+            result: "",
+            hint1: "",
+            hint2: "",
+            hint3: "",
+        });
+
         closed();
     };
 
@@ -56,21 +75,14 @@ const Modal = ({show, closed, challenge}) => {
                 formData.append(key, challengeData[key]);
             });
 
-            await dispatch(createChallenge(formData));
-            onCloseModal();
+            if (isEdit) {
+                await dispatch(editChallenge(cData._id, formData, challengeData));
+            } else {
+                await dispatch(createChallenge(formData));
 
-            setChallengeData({
-                title: "",
-                category: "First-Timers",
-                description: "",
-                points: 1,
-                type: "",
-                file: "",
-                result: "",
-                hint1: "",
-                hint2: "",
-                hint3: "",
-            });
+            }
+
+            onCloseModal();
         }
     };
 
@@ -178,7 +190,7 @@ const Modal = ({show, closed, challenge}) => {
                     <div className="modal__input-block-row">
                         <label>Upload file</label>
                         <Upload {...props} className="modal__file-btn" maxCount={1}>
-                            <Button icon={<UploadOutlined />} className="modal__file-btn">Click to Upload</Button>
+                            <Button icon={<UploadOutlined/>} className="modal__file-btn">Click to Upload</Button>
                         </Upload>
                     </div>
                 </div>
@@ -199,7 +211,7 @@ const Modal = ({show, closed, challenge}) => {
                 <form autoComplete="off" onSubmit={submitFormHandler}>
                     <div className="modal__header">
                         <h2 className="modal__title">
-                            {challenge && "Add new Challenge"}
+                            {challenge && `${isEdit ? "Edit" : "Add new"} Challenge`}
                         </h2>
                     </div>
 
@@ -207,7 +219,7 @@ const Modal = ({show, closed, challenge}) => {
 
                     <div className="modal__footer">
                         <button className="modal__btn modal__btn-success" type="submit">
-                            {challenge && "Create"}
+                            {challenge && `${isEdit ? "Edit" : "Create"}`}
                         </button>
                         <button className="modal__btn modal__btn-cancel" type="button" onClick={onCloseModal}>
                             Close

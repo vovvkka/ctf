@@ -1,29 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import progress from "../assets/svg/progress-tracker.svg";
 import Modal from "../components/UI/Modal/Modal";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchChallenges} from "../store/actions/challengesActions";
 import searchIcon from "../assets/svg/search-icon.svg";
+import ChallengeCard from "../components/ChallengeCard/ChallengeCard";
 
 const AdminPractice = () => {
     const dispatch = useDispatch();
-    // const challenges = useSelector(state => state.challenges.challenges);
+    const challenges = useSelector(state => state.challenges.challenges);
     const [show, setShow] = useState(false);
     const [createChallenge, setCreateChallenge] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [searchCategory, setSearchCategory] = useState("");
+    const [isEdit, setIsEdit] = useState(false);
+    const [challenge, setChallenge] = useState();
 
     useEffect(() => {
         dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}`));
     }, [dispatch, selectedCategory, searchCategory]);
+
+    const openEditChallengeModal = challenge => {
+        setChallenge(challenge);
+        setCreateChallenge(true);
+        setIsEdit(true);
+        setShow(true);
+    };
 
     return (
         <>
             <Modal
                 show={show}
                 challenge={createChallenge}
+                cData={challenge}
+                isEdit={isEdit}
                 closed={() => {
                     setShow(false);
+                    setIsEdit(false);
                     setCreateChallenge(false);
                 }}
             />
@@ -116,6 +129,23 @@ const AdminPractice = () => {
                                     />
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="admin-practice__challenges">
+                            {challenges.map(c =>
+                                <ChallengeCard
+                                    key={c._id}
+                                    challenge={c}
+                                    isAdmin
+                                    onOpenEditModal={openEditChallengeModal}
+                                />
+                            )}
+
+                            {!challenges.length &&
+                                <p className="admin-practice__challenges-error">
+                                    Unfortunately, there are no tasks, come back later!
+                                </p>
+                            }
                         </div>
                     </div>
                 </div>

@@ -65,13 +65,16 @@
 
   &__main {
     margin-top: 28px;
+    display: flex;
+    align-items: flex-start;
   }
 
   &__category {
     border-radius: 5px;
-    max-width: 320px;
+    width: 320px;
     background: $white;
     padding: 25px 18px 90px 18px;
+    margin-right: 65px;
 
     &-title {
       color: #474D5F;
@@ -133,5 +136,21 @@
     border-radius: 8px;
     font-size: 15px;
     letter-spacing: 1px;
+  }
+
+  &__challenges {
+    width: 75%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 0;
+
+    &-error {
+      margin-top: 30px;
+      width: 500px;
+      letter-spacing: 1.5px;
+      font-size: 17px;
+      color: #354675;
+    }
   }
 }

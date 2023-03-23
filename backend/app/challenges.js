@@ -65,4 +65,52 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
     }
 );
 
+router.put('/:id', auth, permit('admin'), upload.single('file'), async (req, res) => {
+        try {
+            const {title, category, description, points, result, hint1, hint2, hint3} = req.body;
+
+            const challengeData = {
+                title,
+                category,
+                description,
+                points,
+                type: "Practice",
+                file: null,
+                result,
+                hint1,
+                hint2,
+                hint3
+            };
+
+            if (req.file) {
+                challengeData.file = 'uploads/' + req.file.filename;
+            }
+
+            const updateChallenge = await Challenge.findByIdAndUpdate(
+                req.params.id,
+                challengeData
+            );
+
+            res.send(updateChallenge);
+        } catch (e) {
+            res.status(400).send(e);
+        }
+    }
+);
+
+router.delete('/:id', auth, permit('admin'), async (req, res) => {
+    try {
+        const challenge = await Challenge.findById(req.params.id);
+
+        if (!challenge) {
+            return res.status(404).send({ message: 'Challenge not found!' });
+        }
+
+        await Challenge.deleteOne(challenge);
+        res.send({ message: 'Challenge deleted successfully!' });
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 module.exports = router;
