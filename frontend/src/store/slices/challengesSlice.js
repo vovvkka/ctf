@@ -44,6 +44,14 @@ const challengesSlice = createSlice({
         editChallengeSuccess(state, action) {
             state.loading = false;
             const idx = state.challenges.findIndex(c => c._id === action.payload.id);
+
+            if (state.challenges[idx].category !== action.payload.challengeData.category) {
+                state.challenges =
+                    [...state.challenges.filter(c => c._id !== action.payload.id)];
+
+                return;
+            }
+
             state.challenges[idx] = action.payload.challengeData;
         },
         editChallengeFailure(state, action) {
