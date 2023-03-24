@@ -9,12 +9,16 @@ import ChallengeCard from "../components/ChallengeCard/ChallengeCard";
 const AdminPractice = () => {
     const dispatch = useDispatch();
     const challenges = useSelector(state => state.challenges.challenges);
-    const [show, setShow] = useState(false);
-    const [createChallenge, setCreateChallenge] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [searchCategory, setSearchCategory] = useState("");
-    const [isEdit, setIsEdit] = useState(false);
     const [challenge, setChallenge] = useState();
+
+    const [isChallengeTask, setIsChallengeTask] = useState(false);
+    const [createChallenge, setCreateChallenge] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [show, setShow] = useState(false);
+
+
 
     useEffect(() => {
         dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}`));
@@ -27,16 +31,24 @@ const AdminPractice = () => {
         setShow(true);
     };
 
+    const openChallenge = challenge => {
+        setChallenge(challenge);
+        setIsChallengeTask(true);
+        setShow(true);
+    };
+
     return (
         <>
             <Modal
                 show={show}
-                challenge={createChallenge}
+                createNewChallenge={createChallenge}
+                isChallenge={isChallengeTask}
                 cData={challenge}
                 isEdit={isEdit}
                 closed={() => {
                     setShow(false);
                     setIsEdit(false);
+                    setIsChallengeTask(false);
                     setCreateChallenge(false);
                 }}
             />
@@ -138,6 +150,7 @@ const AdminPractice = () => {
                                     challenge={c}
                                     isAdmin
                                     onOpenEditModal={openEditChallengeModal}
+                                    onOpenChallenge={openChallenge}
                                 />
                             )}
 

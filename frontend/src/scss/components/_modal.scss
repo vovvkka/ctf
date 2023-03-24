@@ -12,7 +12,7 @@
   top: 7%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
-  border-radius: 20px;
+  border-radius: 10px;
 
   &__header {
     padding: 16px 0;
@@ -41,6 +41,10 @@
     max-width: 530px;
     margin: 0 auto;
     padding: 25px 0;
+
+    &-challenge {
+      max-width: 90%;
+    }
   }
 
   &__row-block {
@@ -157,6 +161,113 @@
 
     .ant-upload-select {
       width: 100%;
+    }
+  }
+
+  &__description {
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    max-width: 400px;
+
+    &-label {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
+    }
+  }
+
+  &__points {
+    font-size: 17px;
+    font-style: italic;
+    color: #332F4B;
+    text-align: right;
+  }
+
+  &__hints {
+    margin-top: 25px;
+
+    &-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    &-field {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &-label {
+      padding: 10px 0;
+      width: 40px;
+      text-align: center;
+      background: #B8FFF2;
+      border-radius: 20px;
+    }
+
+    &-hint {
+      margin-left: 10px;
+      color: #326960;
+      font-size: 15px;
+      font-weight: 200;
+      max-width: 400px;
+    }
+
+    &-show {
+      margin-left: 10px;
+      color: #326960;
+      font-size: 15px;
+      font-weight: 200;
+      max-width: 400px;
+      cursor: pointer;
+    }
+  }
+
+  &__result {
+    position: relative;
+    padding-top: 15px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+
+    &-input {
+      width: 400px !important;
+    }
+
+    &-btn {
+      border: none;
+      background: #50D85E;
+      color: $white;
+      padding: 0 25px;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+  }
+
+  &__download {
+    display: flex;
+    align-items: center;
+    color: #332F4B;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-style: italic;
+
+    img {
+      width: 30px;
+      margin-right: 5px;
+    }
+
+    &:visited {
+      color: #332F4B;
     }
   }
 }

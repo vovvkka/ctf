@@ -4,8 +4,10 @@ import {Button, message, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
 import {createChallenge, editChallenge} from "../../../store/actions/challengesActions";
+import {apiUrl} from "../../../config";
+import fileIcon from "../../../assets/svg/file-icon.svg";
 
-const Modal = ({show, closed, challenge, cData, isEdit}) => {
+const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) => {
     const dispatch = useDispatch();
     const [challengeData, setChallengeData] = useState({
         title: "",
@@ -20,11 +22,17 @@ const Modal = ({show, closed, challenge, cData, isEdit}) => {
         hint3: "",
     });
 
+    const [hint1, setHint1] = useState(false);
+    const [hint2, setHint2] = useState(false);
+    const [hint3, setHint3] = useState(false);
+
+    const [expectedResult, setExpectedResult] = useState('');
+
     useEffect(() => {
         if (isEdit) {
             setChallengeData(cData);
         }
-    }, [cData, challenge, isEdit]);
+    }, [cData, createNewChallenge, isEdit]);
 
     const props = {
         name: 'file',
@@ -62,13 +70,27 @@ const Modal = ({show, closed, challenge, cData, isEdit}) => {
             hint3: "",
         });
 
+        setHint1(false);
+        setHint2(false);
+        setHint3(false);
+        setExpectedResult('');
+
         closed();
     };
 
     const submitFormHandler = async e => {
         e.preventDefault();
 
-        if (challenge) {
+        if (isChallenge) {
+            if (expectedResult !== cData.result) {
+                message.error("Wrong answer!").then(r => r);
+                return;
+            } else {
+                console.log(12)
+            }
+        }
+
+        if (createNewChallenge) {
             const formData = new FormData();
 
             Object.keys(challengeData).forEach((key) => {
@@ -88,7 +110,7 @@ const Modal = ({show, closed, challenge, cData, isEdit}) => {
 
     let children = null;
 
-    if (challenge) {
+    if (createNewChallenge) {
         children = (
             <div className="modal__body">
                 <div className="modal__row-block">
@@ -198,6 +220,65 @@ const Modal = ({show, closed, challenge, cData, isEdit}) => {
         );
     }
 
+    if (isChallenge) {
+        children = (
+            <div className="modal__body modal__body-challenge">
+                <p className="modal__points">{cData.points} points</p>
+                <div className="modal__description-block">
+                    <p className="modal__description-label">Description</p>
+                    <p className="modal__description">{cData.description}</p>
+                </div>
+
+                <div className="modal__hints">
+                    <p className="modal__hints-title">Hints</p>
+
+                    <div className="modal__hints-block">
+                        <div className="modal__hints-field">
+                            <span className="modal__hints-label">1</span>
+                            <p
+                                className={hint1 ? "modal__hints-hint" : "modal__hints-show"}
+                                onClick={() => setHint1(true)}
+                            >
+                                {hint1 ? cData.hint1 : "Show hint"}
+                            </p>
+                        </div>
+
+                        <div className="modal__hints-field">
+                            <span className="modal__hints-label">2</span>
+                            <p
+                                className={hint2 ? "modal__hints-hint" : "modal__hints-show"}
+                                onClick={() => setHint2(true)}
+                            >
+                                {hint2 ? cData.hint2 : "Show hint"}
+                            </p>
+                        </div>
+
+                        <div className="modal__hints-field">
+                            <span className="modal__hints-label">3</span>
+                            <p
+                                className={hint3 ? "modal__hints-hint" : "modal__hints-show"}
+                                onClick={() => setHint3(true)}
+                            >
+                                {hint3 ? cData.hint3 : "Show hint"}
+                            </p>
+                        </div>
+
+                        <a
+                            href={apiUrl + "/" + cData.file}
+                            className="modal__download"
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                        >
+                            <img src={fileIcon} alt="fileIcon"/>
+                            Download file
+                        </a>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <Backdrop show={show} clicked={onCloseModal}/>
@@ -211,25 +292,50 @@ const Modal = ({show, closed, challenge, cData, isEdit}) => {
                 <form autoComplete="off" onSubmit={submitFormHandler}>
                     <div className="modal__header">
                         <h2 className="modal__title">
-                            {challenge && `${isEdit ? "Edit" : "Add new"} Challenge`}
+                            {createNewChallenge && `${isEdit ? "Edit" : "Add new"} Challenge`}
+                            {isChallenge && `${cData.title}`}
                         </h2>
                     </div>
 
                     {children}
 
                     <div className="modal__footer">
-                        <button className="modal__btn modal__btn-success" type="submit">
-                            {challenge && `${isEdit ? "Edit" : "Create"}`}
-                        </button>
-                        <button className="modal__btn modal__btn-cancel" type="button" onClick={onCloseModal}>
-                            Close
-                        </button>
-                    </div>
+                        {
+                            createNewChallenge || isEdit ?
+                                <>
+                                    <button
+                                        className="modal__btn modal__btn-success"
+                                        type="submit"
+                                    >
+                                        {createNewChallenge && `${isEdit ? "Edit" : "Create"}`}
+                                    </button>
+                                    <button
+                                        className="modal__btn modal__btn-cancel"
+                                        type="button"
+                                        onClick={onCloseModal}
+                                    >
+                                        Close
+                                    </button>
+                                </> : <>
+                                    <div className="modal__result">
+                                        <input
+                                            type="text"
+                                            className="modal__input modal__result-input"
+                                            value={expectedResult}
+                                            onChange={e => setExpectedResult(e.target.value)}
+                                        />
 
-                    {/*{register && (*/}
-                    {/*    <p className="modal__footer-privacy">Нажимая кнопку Зарегистрироваться Я соглашаюсь с обработкой*/}
-                    {/*        персональных данных и Политикой конфиденциальности.</p>*/}
-                    {/*)}*/}
+                                        <button
+                                            type="submit"
+                                            className="modal__result-btn"
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
+                                </>
+                        }
+
+                    </div>
                 </form>
             </div>
         </>
