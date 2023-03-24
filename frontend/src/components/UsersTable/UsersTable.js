@@ -1,7 +1,11 @@
 import React from 'react';
 import deleteIcon from "../../assets/delete-icon.png";
+import {useDispatch} from "react-redux";
+import {deleteTeam} from "../../store/actions/usersActions";
 
 const UsersTable = ({userTable, users}) => {
+    const dispatch = useDispatch();
+
     return (
         <div className="table">
             <table>
@@ -44,6 +48,7 @@ const UsersTable = ({userTable, users}) => {
                                             src={deleteIcon}
                                             alt="Удалить"
                                             width={15}
+                                            onClick={() => dispatch(deleteTeam(user._id))}
                                         />
                                     </td>
                                 ) : null}

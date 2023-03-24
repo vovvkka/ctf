@@ -69,10 +69,22 @@ const usersSlice = createSlice({
             state.logoutLoading = false;
             state.logoutError = action.payload;
         },
-        forgotPasswordRequest(state) {
-            state.forgotLoading = true;
-            state.forgotError = null;
+        deleteTeamRequest(state) {
+            state.loading = true;
+            state.error = null;
         },
+        deleteTeamSuccess(state, action) {
+            state.loading = false;
+            state.users = [...state.users.filter(us => us._id !== action.payload)];
+        },
+        deleteTeamFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        // forgotPasswordRequest(state) {
+        //     state.forgotLoading = true;
+        //     state.forgotError = null;
+        // },
         // forgotPasswordSuccess(state) {
         //     state.forgotLoading = false;
         // },
@@ -107,6 +119,9 @@ export const {
     logoutRequest,
     logoutSuccess,
     logoutFailure,
+    deleteTeamRequest,
+    deleteTeamSuccess,
+    deleteTeamFailure
 } = usersSlice.actions;
 
 export default usersSlice;

@@ -8,7 +8,13 @@ import {
     logoutFailure,
     registerRequest,
     registerSuccess,
-    registerFailure, fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure,
+    registerFailure,
+    fetchUsersRequest,
+    fetchUsersSuccess,
+    fetchUsersFailure,
+    deleteTeamRequest,
+    deleteTeamFailure,
+    deleteTeamSuccess,
 } from '../slices/usersSlice';
 import {historyPush} from "./historyActions";
 import {addNotification} from "./notifierActions";
@@ -92,6 +98,20 @@ export const logoutUser = () => {
             dispatch(logoutSuccess());
         } catch (e) {
             dispatch(logoutFailure(e));
+        }
+    };
+};
+
+export const deleteTeam = id => {
+    return async (dispatch) => {
+        try {
+            dispatch(deleteTeamRequest());
+
+            await axiosApi.delete('/users/' + id);
+
+            dispatch(deleteTeamSuccess(id));
+        } catch (e) {
+            dispatch(deleteTeamFailure(e));
         }
     };
 };

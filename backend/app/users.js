@@ -85,6 +85,17 @@ router.delete('/sessions', async (req, res) => {
     return res.send({success, user});
 });
 
+router.delete('/:id', auth, permit("admin"), async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return res.status(404).send({ message: 'User not found!' });
+    }
+
+    await User.deleteOne(user);
+    res.send({ message: 'User deleted successfully!' });
+});
+
 // router.post('/forgot-password', async (req, res) => {
 //     const {email} = req.body;
 //
