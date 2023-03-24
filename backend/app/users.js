@@ -18,6 +18,16 @@ router.get('/:id', auth, permit('admin'), async (req, res) => {
     }
 });
 
+router.get('/',  async (req, res) => {
+    try {
+        const user = await User.find();
+        res.send(user);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
+
 
 router.post('/', async (req, res) => {
     const {users, teamName, password, email} = req.body;

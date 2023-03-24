@@ -3,7 +3,7 @@ import Backdrop from "../Backdrop/Backdrop";
 import {Button, message, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {createChallenge, editChallenge} from "../../../store/actions/challengesActions";
+import {checkAccuracyChallenge, createChallenge, editChallenge} from "../../../store/actions/challengesActions";
 import {apiUrl} from "../../../config";
 import fileIcon from "../../../assets/svg/file-icon.svg";
 
@@ -82,11 +82,9 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
         e.preventDefault();
 
         if (isChallenge) {
-            if (expectedResult !== cData.result) {
-                message.error("Wrong answer!").then(r => r);
-                return;
-            } else {
-                console.log(12)
+            const answer = await dispatch(checkAccuracyChallenge(cData._id, {result: expectedResult}));
+            if (answer.message) {
+                onCloseModal();
             }
         }
 

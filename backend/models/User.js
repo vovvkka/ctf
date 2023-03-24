@@ -84,6 +84,11 @@ const UserSchema = new Schema({
             message: "The password must be longer than 6 characters"
         }
     },
+    practicePoints: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     token: {
         type: String,
         required: true,

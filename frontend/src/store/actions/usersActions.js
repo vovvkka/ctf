@@ -8,10 +8,33 @@ import {
     logoutFailure,
     registerRequest,
     registerSuccess,
-    registerFailure,
+    registerFailure, fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure,
 } from '../slices/usersSlice';
 import {historyPush} from "./historyActions";
 import {addNotification} from "./notifierActions";
+import {message} from "antd";
+
+export const fetchUsers = () => {
+    return async dispatch => {
+        try {
+            dispatch(fetchUsersRequest());
+
+            const response = await axiosApi.get('/users');
+
+            dispatch(fetchUsersSuccess(response.data));
+        } catch (e) {
+            message.error("Oops, an error has occurred").then(e => e);
+
+            if (e.response && e.response.data) {
+                dispatch(fetchUsersFailure(e.response.data));
+                throw e;
+            } else {
+                dispatch(fetchUsersFailure({global: 'No internet'}));
+                throw e;
+            }
+        }
+    };
+};
 
 export const registerUser = userData => {
     return async dispatch => {

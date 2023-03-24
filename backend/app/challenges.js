@@ -7,6 +7,7 @@ const multer = require('multer');
 const config = require('../config');
 const {nanoid} = require('nanoid');
 const Challenge = require("../models/Challenge");
+const User = require("../models/User");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -61,6 +62,33 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
             res.send(newChallenge);
         } catch (e) {
             res.status(400).send(e);
+        }
+    }
+);
+
+router.post('/:id', auth, async (req, res) => {
+        try {
+            const {result} = req.body;
+
+            const challenge = await Challenge.findById(req.params.id);
+
+            if (!challenge) {
+                return res.status(404).send({message: "Challenge not found"});
+            }
+
+            if (challenge.result !== result) {
+                return res.send({error: "Wrong answer!"});
+            }
+
+            const user = await User.findById(req.user._id);
+            user.practicePoints += challenge.points;
+            await user.save({validateBeforeSave: false});
+
+            console.log(user);
+
+            res.send({message: "Congratulations! Your answer is correct!"});
+        } catch (e) {
+            return res.status(400).send(e.message);
         }
     }
 );

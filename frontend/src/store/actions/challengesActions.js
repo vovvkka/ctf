@@ -1,5 +1,7 @@
 import axiosApi from '../../axiosApi';
 import {
+    checkResultFailure,
+    checkResultRequest, checkResultSuccess,
     createChallengeFailure,
     createChallengeRequest,
     createChallengeSuccess,
@@ -12,6 +14,7 @@ import {
     fetchChallengesSuccess
 } from "../slices/challengesSlice";
 import {addNotification} from "./notifierActions";
+import {message} from "antd";
 
 export const fetchChallenges = query => {
     return async dispatch => {
@@ -82,6 +85,27 @@ export const deleteChallenge = id => {
             dispatch(deleteChallengeSuccess(id));
         } catch (e) {
             dispatch(deleteChallengeFailure(e));
+        }
+    };
+};
+
+export const checkAccuracyChallenge = (id, result) => {
+    return async dispatch => {
+        try {
+            dispatch(checkResultRequest());
+
+            const response = await axiosApi.post('/challenges/' + id, result);
+
+            if (response.data.error) {
+                return message.error("Wrong answer!").then(r => r);
+            }
+
+            message.success(response.data.message).then(r => r);
+            dispatch(checkResultSuccess(response.data));
+
+            return response.data;
+        } catch (e) {
+            dispatch(checkResultFailure(e));
         }
     };
 };

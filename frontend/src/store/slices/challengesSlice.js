@@ -58,6 +58,17 @@ const challengesSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        checkResultRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        checkResultSuccess(state) {
+            state.loading = false;
+        },
+        checkResultFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
         deleteChallengeRequest(state) {
             state.loading = true;
             state.error = null;
@@ -85,7 +96,10 @@ export const {
     editChallengeFailure,
     deleteChallengeRequest,
     deleteChallengeSuccess,
-    deleteChallengeFailure
+    deleteChallengeFailure,
+    checkResultRequest,
+    checkResultSuccess,
+    checkResultFailure
 } = challengesSlice.actions;
 
 export default challengesSlice;
