@@ -20,12 +20,20 @@ import {historyPush} from "./historyActions";
 import {addNotification} from "./notifierActions";
 import {message} from "antd";
 
-export const fetchUsers = () => {
+export const fetchUsers = query => {
     return async dispatch => {
         try {
             dispatch(fetchUsersRequest());
 
-            const response = await axiosApi.get('/users');
+            let response;
+
+            console.log(query);
+            if (query) {
+                response = await axiosApi.get('/users' + query);
+            } else {
+                response = await axiosApi.get('/users');
+            }
+
 
             dispatch(fetchUsersSuccess(response.data));
         } catch (e) {

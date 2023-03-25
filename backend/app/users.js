@@ -20,7 +20,13 @@ router.get('/:id', auth, permit('admin'), async (req, res) => {
 
 router.get('/',  async (req, res) => {
     try {
-        const user = await User.find();
+        const sort = {};
+
+        if (req.query.filter) {
+            sort.practicePoints = "desc";
+        }
+
+        const user = await User.find().sort(sort);
         res.send(user);
     } catch (e) {
         res.status(400).send(e);

@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import AdminPractice from "./containers/AdminPractice";
 import AdminTeams from "./containers/AdminTeams";
 import Practice from "./containers/Practice";
+import ScoreBoard from "./containers/ScoreBoard";
 
 const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
     return isAllowed ? <Route {...props} /> : <Redirect to="/" />;
@@ -22,6 +23,7 @@ const App = () => {
                 <Route path="/" component={HomePage} exact />
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
+                <Route path="/score-board" component={ScoreBoard}/>
 
                 <ProtectedRoute
                     path="/practice"
@@ -30,7 +32,6 @@ const App = () => {
                     redirectTo="/"
                     exact
                 />
-
 
                 <ProtectedRoute
                     path="/admin-practice"

@@ -25,20 +25,22 @@ const Header = () => {
                     </div>
 
                     <div className="header__list">
-                        {
-                            user ?
-                                <ul>
-                                    <Link to="/score-board">
-                                        <li>Score board</li>
-                                    </Link>
+                        <ul>
+                            <Link to="/score-board">
+                                <li>Score board</li>
+                            </Link>
+                            {user ?
+                                <>
                                     <Link to="/practice">
                                         <li>Practice</li>
                                     </Link>
                                     <Link to="/enter-competition">
                                         <li className="header__list-last">Enter a CTF competition</li>
                                     </Link>
-                                </ul> : null
-                        }
+                                </> : null
+                            }
+                        </ul>
+
                     </div>
 
                     <Anonymous/>
