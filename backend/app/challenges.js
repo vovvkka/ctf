@@ -81,12 +81,22 @@ router.post('/:id', auth, async (req, res) => {
             }
 
             const user = await User.findById(req.user._id);
-            user.practicePoints += challenge.points;
-            await user.save({validateBeforeSave: false});
+
+            if (!user.solvedPracticeChallenges.find(c => c === challenge._id.toString())) {
+                user.practicePoints += challenge.points;
+                user.solvedPracticeChallenges.push(challenge._id);
+                await user.save({validateBeforeSave: false});
+
+                return res.send({
+                    message: "Congratulations! Your answer is correct!",
+                    points: challenge.points,
+                    challengeId: challenge._id
+                });
+            }
 
             res.send({
                 message: "Congratulations! Your answer is correct!",
-                points: challenge.points
+                points: 0
             });
         } catch (e) {
             return res.status(400).send(e.message);

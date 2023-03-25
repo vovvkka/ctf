@@ -104,6 +104,7 @@ const UserSchema = new Schema({
         required: true,
         default: new Date(),
     },
+    solvedPracticeChallenges: [{type: String}]
 });
 
 UserSchema.pre('save', async function(next) {

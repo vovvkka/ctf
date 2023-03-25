@@ -1,15 +1,27 @@
 import React from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {deleteChallenge} from "../../store/actions/challengesActions";
+import checkmark from "../../assets/svg/checkmark.svg";
 
-const ChallengeCard = ({ isAdmin, challenge, onOpenEditModal, onOpenChallenge }) => {
+const ChallengeCard = ({isAdmin, challenge, onOpenEditModal, onOpenChallenge}) => {
     const dispatch = useDispatch();
+    const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
 
     return (
         <div className="challenge" onClick={() => onOpenChallenge(challenge)}>
             <div className="challenge__top">
                 <span>Cryptography</span>
                 <span>| {challenge.points} {challenge.points > 1 ? "points" : "point"}</span>
+                {solved.find(s => s === challenge._id) &&
+                    <span className="challenge__solved">
+                        <img
+                            src={checkmark}
+                            alt="checkmark"
+                            className="challenge__checkmark"
+                        />
+                        Solved
+                    </span>
+                }
             </div>
 
             <div className="challenge__middle">

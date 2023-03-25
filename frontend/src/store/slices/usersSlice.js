@@ -82,9 +82,13 @@ const usersSlice = createSlice({
             state.error = action.payload;
         },
         addPracticeScore(state, action) {
-            const {points} = action.payload;
+            const {points, challengeId} = action.payload;
 
             state.user.practicePoints += points;
+
+            if (challengeId) {
+                state.user.solvedPracticeChallenges.push(challengeId);
+            }
         },
         // forgotPasswordRequest(state) {
         //     state.forgotLoading = true;

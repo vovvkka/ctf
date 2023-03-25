@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import Backdrop from "../Backdrop/Backdrop";
 import {Button, message, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {checkAccuracyChallenge, createChallenge, editChallenge} from "../../../store/actions/challengesActions";
 import {apiUrl} from "../../../config";
 import fileIcon from "../../../assets/svg/file-icon.svg";
 
 const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) => {
     const dispatch = useDispatch();
+    const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
     const [challengeData, setChallengeData] = useState({
         title: "",
         category: "First-Timers",
@@ -226,9 +227,19 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
             }
         };
 
+        const checkIsSolved = () => {
+            return solved.find(s => s === cData._id);
+        };
+
         children = (
             <div className="modal__body modal__body-challenge">
-                <p className="modal__points">{cData.points} points</p>
+                {checkIsSolved() &&
+                    <p className="modal__solved">
+                        * You will not get points for the solution,
+                        since you have already solved the challenge.
+                    </p>
+                }
+                <p className="modal__points">{checkIsSolved() ? 0 : cData.points} points</p>
                 <div className="modal__description-block">
                     <p className="modal__description-label">Description</p>
                     <p className="modal__description">{cData.description}</p>

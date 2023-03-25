@@ -178,6 +178,13 @@
     }
   }
 
+  &__solved {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #d56262;
+    margin-bottom: 15px;
+  }
+
   &__points {
     font-size: 17px;
     font-style: italic;
