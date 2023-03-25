@@ -81,6 +81,11 @@ const usersSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        addPracticeScore(state, action) {
+            const {points} = action.payload;
+
+            state.user.practicePoints += points;
+        },
         // forgotPasswordRequest(state) {
         //     state.forgotLoading = true;
         //     state.forgotError = null;
@@ -121,7 +126,8 @@ export const {
     logoutFailure,
     deleteTeamRequest,
     deleteTeamSuccess,
-    deleteTeamFailure
+    deleteTeamFailure,
+    addPracticeScore
 } = usersSlice.actions;
 
 export default usersSlice;

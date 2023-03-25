@@ -84,9 +84,10 @@ router.post('/:id', auth, async (req, res) => {
             user.practicePoints += challenge.points;
             await user.save({validateBeforeSave: false});
 
-            console.log(user);
-
-            res.send({message: "Congratulations! Your answer is correct!"});
+            res.send({
+                message: "Congratulations! Your answer is correct!",
+                points: challenge.points
+            });
         } catch (e) {
             return res.status(400).send(e.message);
         }

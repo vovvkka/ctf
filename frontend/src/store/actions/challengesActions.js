@@ -15,6 +15,7 @@ import {
 } from "../slices/challengesSlice";
 import {addNotification} from "./notifierActions";
 import {message} from "antd";
+import {addPracticeScore} from "../slices/usersSlice";
 
 export const fetchChallenges = query => {
     return async dispatch => {
@@ -97,11 +98,15 @@ export const checkAccuracyChallenge = (id, result) => {
             const response = await axiosApi.post('/challenges/' + id, result);
 
             if (response.data.error) {
+                dispatch(checkResultSuccess());
                 return message.error("Wrong answer!").then(r => r);
             }
 
             message.success(response.data.message).then(r => r);
-            dispatch(checkResultSuccess(response.data));
+
+
+            await dispatch(checkResultSuccess(response.data));
+            await dispatch(addPracticeScore(response.data));
 
             return response.data;
         } catch (e) {

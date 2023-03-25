@@ -219,6 +219,13 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
     }
 
     if (isChallenge) {
+        const checkLink = (e) => {
+            if (!cData?.file) {
+                e.preventDefault();
+                message.info("This challenge doesn't  have a file.").then(r => r);
+            }
+        };
+
         children = (
             <div className="modal__body modal__body-challenge">
                 <p className="modal__points">{cData.points} points</p>
@@ -263,6 +270,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
 
                         <a
                             href={apiUrl + "/" + cData.file}
+                            onClick={checkLink}
                             className="modal__download"
                             target="_blank"
                             rel="noreferrer"

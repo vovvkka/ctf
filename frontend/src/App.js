@@ -22,7 +22,15 @@ const App = () => {
                 <Route path="/" component={HomePage} exact />
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
-                <Route path="/practice" component={Practice}/>
+
+                <ProtectedRoute
+                    path="/practice"
+                    component={Practice}
+                    isAllowed={user}
+                    redirectTo="/"
+                    exact
+                />
+
 
                 <ProtectedRoute
                     path="/admin-practice"
