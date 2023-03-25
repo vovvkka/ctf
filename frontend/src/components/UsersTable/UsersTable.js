@@ -16,7 +16,7 @@ const UsersTable = ({userTable, users}) => {
                     <th className="table__score">Practice Score</th>
                     <th className="table__date">Registered Date</th>
                     <th>Team Members</th>
-                    {!userTable ? <th className="table__actions-th">Actions</th> : null}
+                    {!userTable ? <th className="table__actions-th"></th> : null}
                 </tr>
                 </thead>
                 <tbody>

@@ -14,11 +14,21 @@
   }
 
   table, th, td {
-    border: 1px solid #acc6d9;
+    border-bottom: 1px solid #acc6d9;
+    border-right: none;
     border-radius: 10px;
     border-collapse: collapse;
     padding: 10px;
     margin: 0;
+
+    &:first-child {
+      border-left: 1px solid #acc6d9;
+      border-top: 1px solid #acc6d9;
+    }
+
+    &:last-child {
+      border-right: 1px solid #acc6d9;
+    }
   }
 
   td {
@@ -62,7 +72,7 @@
   }
 
   &__score {
-    width: 100px;
+    width: 150px;
   }
 
   &__date {
