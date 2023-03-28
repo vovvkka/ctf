@@ -27,7 +27,6 @@ export const fetchUsers = query => {
 
             let response;
 
-            console.log(query);
             if (query) {
                 response = await axiosApi.get('/users' + query);
             } else {

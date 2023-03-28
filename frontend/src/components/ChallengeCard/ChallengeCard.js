@@ -12,7 +12,7 @@ const ChallengeCard = ({isAdmin, challenge, onOpenEditModal, onOpenChallenge}) =
             <div className="challenge__top">
                 <span>Cryptography</span>
                 <span>| {challenge.points} {challenge.points > 1 ? "points" : "point"}</span>
-                {solved.find(s => s === challenge._id) &&
+                {!isAdmin && solved.find(s => s === challenge._id) &&
                     <span className="challenge__solved">
                         <img
                             src={checkmark}

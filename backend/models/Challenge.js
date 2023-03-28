@@ -5,6 +5,7 @@ const ChallengeSchema = new Schema({
     title: {
         type: String,
         required: true,
+        maxLength: 50,
     },
     category: {
         type: String,
@@ -20,6 +21,8 @@ const ChallengeSchema = new Schema({
         type: Number,
         required: true,
         default: 1,
+        min: 1,
+        max: 99,
     },
     type: {
         type: String,
@@ -31,6 +34,7 @@ const ChallengeSchema = new Schema({
     result: {
         type: String,
         required: true,
+        maxLength: 50,
     },
     hint1: {
         type: String,

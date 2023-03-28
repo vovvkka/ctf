@@ -6,8 +6,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {checkAccuracyChallenge, createChallenge, editChallenge} from "../../../store/actions/challengesActions";
 import {apiUrl} from "../../../config";
 import fileIcon from "../../../assets/svg/file-icon.svg";
+import {deleteTeam} from "../../../store/actions/usersActions";
 
-const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) => {
+const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, isDeleteTeam, teamId}) => {
     const dispatch = useDispatch();
     const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
     const [challengeData, setChallengeData] = useState({
@@ -54,6 +55,11 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
 
     const inputChallengeChangeHandler = e => {
         const {name, value} = e.target;
+
+        if (name === "points" && value > 99) {
+            return setChallengeData(prev => ({...prev, [name]: 99}));
+        }
+
         setChallengeData(prev => ({...prev, [name]: value}));
     };
 
@@ -81,6 +87,11 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
 
     const submitFormHandler = async e => {
         e.preventDefault();
+
+        if (isDeleteTeam) {
+            await dispatch(deleteTeam(teamId));
+            onCloseModal();
+        }
 
         if (isChallenge) {
             const answer = await dispatch(checkAccuracyChallenge(cData._id, {result: expectedResult}));
@@ -120,6 +131,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
                             className="modal__input"
                             value={challengeData.title}
                             onChange={inputChallengeChangeHandler}
+                            maxLength={50}
                             required
                         />
                     </div>
@@ -131,6 +143,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
                             className="modal__input"
                             type="number"
                             min={1}
+                            max={99}
                             value={challengeData.points}
                             onChange={inputChallengeChangeHandler}
                             required
@@ -204,6 +217,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
                             className="modal__input"
                             value={challengeData.result}
                             onChange={inputChallengeChangeHandler}
+                            maxLength={50}
                             required
                         />
                     </div>
@@ -296,11 +310,21 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
         );
     }
 
+    if (isDeleteTeam) {
+        children = (
+            <div className="modal__body modal__body-alert">
+                <p className="modal__alert-text">
+                    Are you sure you want to delete the team?
+                </p>
+            </div>
+        )
+    }
+
     return (
         <>
             <Backdrop show={show} clicked={onCloseModal}/>
             <div
-                className="modal"
+                className={isDeleteTeam ? "modal modal__delete-team" : "modal"}
                 style={{
                     transform: show ? 'translateY(0)' : 'translateY(-100vh)',
                     opacity: show ? '1' : '0',
@@ -311,6 +335,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
                         <h2 className="modal__title">
                             {createNewChallenge && `${isEdit ? "Edit" : "Add new"} Challenge`}
                             {isChallenge && `${cData.title}`}
+                            {isDeleteTeam && "Confirm the action"}
                         </h2>
                     </div>
 
@@ -318,40 +343,61 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit}) =
 
                     <div className="modal__footer">
                         {
-                            createNewChallenge || isEdit ?
-                                <>
-                                    <button
-                                        className="modal__btn modal__btn-success"
-                                        type="submit"
-                                    >
-                                        {createNewChallenge && `${isEdit ? "Edit" : "Create"}`}
-                                    </button>
-                                    <button
-                                        className="modal__btn modal__btn-cancel"
-                                        type="button"
-                                        onClick={onCloseModal}
-                                    >
-                                        Close
-                                    </button>
-                                </> : <>
-                                    <div className="modal__result">
-                                        <input
-                                            type="text"
-                                            className="modal__input modal__result-input"
-                                            value={expectedResult}
-                                            onChange={e => setExpectedResult(e.target.value)}
-                                        />
-
-                                        <button
-                                            type="submit"
-                                            className="modal__result-btn"
-                                        >
-                                            Submit
-                                        </button>
-                                    </div>
-                                </>
+                            (createNewChallenge || isEdit) &&
+                            <>
+                                <button
+                                    className="modal__btn modal__btn-success"
+                                    type="submit"
+                                >
+                                    {createNewChallenge && `${isEdit ? "Edit" : "Create"}`}
+                                </button>
+                                <button
+                                    className="modal__btn modal__btn-cancel"
+                                    type="button"
+                                    onClick={onCloseModal}
+                                >
+                                    Close
+                                </button>
+                            </>
                         }
 
+                        {
+                            isChallenge &&
+                            <div className="modal__result">
+                                <input
+                                    type="text"
+                                    className="modal__input modal__result-input"
+                                    value={expectedResult}
+                                    onChange={e => setExpectedResult(e.target.value)}
+                                />
+
+                                <button
+                                    type="submit"
+                                    className="modal__result-btn"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        }
+
+                        {
+                            isDeleteTeam &&
+                            <div className="modal__buttons">
+                                <button
+                                    className="modal__confirm"
+                                    type="submit"
+                                >
+                                    Confirm
+                                </button>
+                                <button
+                                    className="modal__cancel"
+                                    type="button"
+                                    onClick={onCloseModal}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        }
                     </div>
                 </form>
             </div>

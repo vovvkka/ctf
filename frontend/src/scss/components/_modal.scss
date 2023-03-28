@@ -14,6 +14,10 @@
   transition: all 0.3s ease-out;
   border-radius: 10px;
 
+  &__delete-team {
+    top: 35%;
+  }
+
   &__header {
     padding: 16px 0;
     display: flex;
@@ -44,6 +48,10 @@
 
     &-challenge {
       max-width: 90%;
+    }
+
+    &-alert {
+      max-width: 400px;
     }
   }
 
@@ -214,13 +222,13 @@
       padding: 10px 0;
       width: 40px;
       text-align: center;
-      background: #B8FFF2;
+      background: #9db4ff;
       border-radius: 20px;
     }
 
     &-hint {
       margin-left: 10px;
-      color: #326960;
+      color: #4865ce;
       font-size: 15px;
       font-weight: 200;
       max-width: 400px;
@@ -228,7 +236,7 @@
 
     &-show {
       margin-left: 10px;
-      color: #326960;
+      color: #4865ce;
       font-size: 15px;
       font-weight: 200;
       max-width: 400px;
@@ -277,11 +285,51 @@
       color: #332F4B;
     }
   }
+
+  &__alert-text {
+    text-align: center;
+    color: #000;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  &__buttons {
+    display: flex;
+    padding-bottom: 20px;
+  }
+
+  &__confirm {
+    border: none;
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    background: #1bc776;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  &__cancel {
+    border: none;
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    background: #b95858;
+    margin-left: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
 }
 
 @media (min-width: 800px) {
   .modal {
     width: 700px;
     left: calc(50% - 350px);
+
+    &__delete-team {
+      width: 500px;
+      left: calc(50% - 250px);
+    }
   }
 }

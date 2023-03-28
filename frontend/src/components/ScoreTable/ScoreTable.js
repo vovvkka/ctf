@@ -14,7 +14,7 @@ const ScoreTable = ({ users }) => {
                 <tbody>
                 {
                     users?.length && users.map((user, idx) => {
-                        return (
+                        return user.role !== "admin" && (
                             <tr key={user?._id} className="table__scoreboard">
                                 <td className="table__sm">{idx + 1}</td>
                                 <td className="table__s">{user?.teamName}</td>

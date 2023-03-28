@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
         if (category) query.category = category;
         if (title) query.title = { $regex: title, $options: 'i' };
 
-        const challenges = await Challenge.find(query);
+        const challenges = await Challenge.find(query).sort({createdAt: "desc"});
         res.send(challenges);
     } catch (e) {
         res.status(500).send(e);
