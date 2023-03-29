@@ -3,28 +3,23 @@ import {message} from "antd";
 import {
     createCompetitionFailure,
     createCompetitionRequest,
-    createCompetitionSuccess
+    createCompetitionSuccess, fetchCompetitionsFailure, fetchCompetitionsRequest, fetchCompetitionsSuccess
 } from "../slices/competitionsSlice";
 
-// export const fetchChallenges = query => {
-//     return async dispatch => {
-//         try {
-//             dispatch(fetchChallengesRequest());
-//
-//             let response;
-//
-//             if (query) {
-//                 response = await axiosApi.get('/challenges' + query);
-//             } else {
-//                 response = await axiosApi.get('/challenges');
-//             }
-//
-//             dispatch(fetchChallengesSuccess(response.data));
-//         } catch (e) {
-//             dispatch(fetchChallengesFailure(e));
-//         }
-//     };
-// };
+export const fetchCompetitions = () => {
+    return async dispatch => {
+        try {
+            dispatch(fetchCompetitionsRequest());
+
+
+            const response = await axiosApi.get('/competitions');
+
+            dispatch(fetchCompetitionsSuccess(response.data));
+        } catch (e) {
+            dispatch(fetchCompetitionsFailure(e));
+        }
+    };
+};
 
 export const createCompetition = competitionData => {
     return async dispatch => {

@@ -51,8 +51,6 @@ const ChallengeCard = ({isAdmin, challenge, onOpenEditModal, onOpenChallenge}) =
                     )
                 }
             </div>
-
-
         </div>
     );
 };

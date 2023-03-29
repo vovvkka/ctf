@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from "../components/UI/Modal/Modal";
+import {useDispatch, useSelector} from "react-redux";
+import CompetitionCard from "../components/CompetitionCard/CompetitionCard";
+import {fetchCompetitions} from "../store/actions/competitionsActions";
 
 const AdminCompetitions = () => {
+    const dispatch = useDispatch();
+    const competitions = useSelector(state => state.competitions.competitions);
     const [show, setShow] = useState(false);
     const [createNewCompetition, setCreateNewCompetition] = useState(false);
 
@@ -9,6 +14,10 @@ const AdminCompetitions = () => {
         setCreateNewCompetition(true);
         setShow(true);
     };
+
+    useEffect(() => {
+        dispatch(fetchCompetitions());
+    }, [dispatch])
 
     return (
         <>
@@ -40,6 +49,23 @@ const AdminCompetitions = () => {
                                     Create new competition
                                 </button>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="admin-competitions__main">
+                       <div className="admin-competitions__cards">
+                            {competitions.map(c =>
+                                <CompetitionCard
+                                    key={c._id}
+                                    competition={c}
+                                />
+                            )}
+
+                            {!competitions.length &&
+                                <p className="admin-practice__challenges-error">
+                                    Unfortunately, there are no competitions, come back later!
+                                </p>
+                            }
                         </div>
                     </div>
                 </div>

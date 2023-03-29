@@ -38,4 +38,26 @@
     border: none;
     cursor: pointer;
   }
+
+  &__main {
+    margin-top: 28px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 0;
+
+    &-error {
+      margin-top: 30px;
+      width: 500px;
+      letter-spacing: 1.5px;
+      font-size: 17px;
+      color: #354675;
+    }
+  }
 }
