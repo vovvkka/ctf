@@ -7,10 +7,22 @@ import {checkAccuracyChallenge, createChallenge, editChallenge} from "../../../s
 import {apiUrl} from "../../../config";
 import fileIcon from "../../../assets/svg/file-icon.svg";
 import {deleteTeam} from "../../../store/actions/usersActions";
+import {createCompetition} from "../../../store/actions/competitionsActions";
 
-const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, isDeleteTeam, teamId}) => {
+const Modal = ({
+                   show,
+                   closed,
+                   createNewChallenge,
+                   isChallenge,
+                   cData,
+                   isEdit,
+                   isDeleteTeam,
+                   teamId,
+                   createNewCompetition
+               }) => {
     const dispatch = useDispatch();
     const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
+
     const [challengeData, setChallengeData] = useState({
         title: "",
         category: "First-Timers",
@@ -22,6 +34,11 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
         hint1: "",
         hint2: "",
         hint3: "",
+    });
+
+    const [competitionData, setCompetitionData] = useState({
+        title: "",
+        maxTeams: 1,
     });
 
     const [hint1, setHint1] = useState(false);
@@ -61,6 +78,16 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
         }
 
         setChallengeData(prev => ({...prev, [name]: value}));
+    };
+
+    const inputCompetitionChangeHandler = e => {
+        const {name, value} = e.target;
+
+        if (name === "maxTeams" && value > 99) {
+            return setCompetitionData(prev => ({...prev, [name]: 99}));
+        }
+
+        setCompetitionData(prev => ({...prev, [name]: value}));
     };
 
     const onCloseModal = () => {
@@ -111,9 +138,13 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
                 await dispatch(editChallenge(cData._id, formData, challengeData));
             } else {
                 await dispatch(createChallenge(formData));
-
             }
 
+            onCloseModal();
+        }
+
+        if (createNewCompetition) {
+            await dispatch(createCompetition({...competitionData}));
             onCloseModal();
         }
     };
@@ -310,6 +341,40 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
         );
     }
 
+    if (createNewCompetition) {
+        children = (
+            <div className="modal__body">
+                <div className="modal__row-block">
+                    <div className="modal__input-block-row modal__input-block-row-first">
+                        <label>Title *</label>
+                        <input
+                            name="title"
+                            className="modal__input"
+                            value={competitionData.title}
+                            onChange={inputCompetitionChangeHandler}
+                            maxLength={50}
+                            required
+                        />
+                    </div>
+
+                    <div className="modal__input-block-row modal__input-block-row-second">
+                        <label>Max teams *</label>
+                        <input
+                            name="maxTeams"
+                            className="modal__input"
+                            type="number"
+                            min={1}
+                            max={99}
+                            value={competitionData.maxTeams}
+                            onChange={inputCompetitionChangeHandler}
+                            required
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (isDeleteTeam) {
         children = (
             <div className="modal__body modal__body-alert">
@@ -320,11 +385,16 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
         )
     }
 
+    const classes = ["modal"];
+
+    if (isDeleteTeam) classes.push("modal__delete-team");
+    if (createNewCompetition) classes.push("modal__create-competition");
+
     return (
         <>
             <Backdrop show={show} clicked={onCloseModal}/>
             <div
-                className={isDeleteTeam ? "modal modal__delete-team" : "modal"}
+                className={classes.join(" ")}
                 style={{
                     transform: show ? 'translateY(0)' : 'translateY(-100vh)',
                     opacity: show ? '1' : '0',
@@ -336,6 +406,7 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
                             {createNewChallenge && `${isEdit ? "Edit" : "Add new"} Challenge`}
                             {isChallenge && `${cData.title}`}
                             {isDeleteTeam && "Confirm the action"}
+                            {createNewCompetition && "Create new competition"}
                         </h2>
                     </div>
 
@@ -388,6 +459,25 @@ const Modal = ({show, closed, createNewChallenge, isChallenge, cData, isEdit, is
                                     type="submit"
                                 >
                                     Confirm
+                                </button>
+                                <button
+                                    className="modal__cancel"
+                                    type="button"
+                                    onClick={onCloseModal}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        }
+
+                        {
+                            createNewCompetition &&
+                            <div className="modal__buttons">
+                                <button
+                                    className="modal__confirm"
+                                    type="submit"
+                                >
+                                    Create
                                 </button>
                                 <button
                                     className="modal__cancel"

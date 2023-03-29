@@ -6,10 +6,12 @@ import thunk from "redux-thunk";
 import usersSlice from "./slices/usersSlice";
 import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import challengesSlice from "./slices/challengesSlice";
+import competitionsSlice from "./slices/competitionsSlice";
 
 const rootReducer = combineReducers({
     users: usersSlice.reducer,
-    challenges: challengesSlice.reducer
+    challenges: challengesSlice.reducer,
+    competitions: competitionsSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();

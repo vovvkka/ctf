@@ -1,0 +1,41 @@
+@import "../variables";
+
+.admin-competitions {
+  &__page {
+    background: #76A0E0;
+    padding: 20px 50px;
+    color: $white;
+  }
+
+  &__info {
+    margin-top: 35px;
+    background: $white;
+    border-radius: 5px;
+
+    &-block {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: #5969F6;
+      }
+    }
+  }
+
+  &__new-btn {
+    background: #5fc44f;
+    padding: 12px 20px;
+    color: $white;
+    border-radius: 3px;
+    font-size: 15px;
+    letter-spacing: 0.6px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+  }
+}

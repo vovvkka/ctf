@@ -7,6 +7,7 @@ const config = require('./config');
 
 const users = require('./app/users');
 const challenges = require('./app/challenges');
+const competitions = require('./app/competitions');
 
 const app = express();
 const port = 8000;
@@ -18,6 +19,7 @@ app.use(cors());
 
 app.use('/users', users);
 app.use('/challenges', challenges);
+app.use('/competitions', competitions);
 
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
