@@ -18,7 +18,7 @@ const Practice = () => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}`));
+        dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}&type=Practice`));
     }, [dispatch, selectedCategory, searchCategory]);
 
     const openChallenge = challenge => {

@@ -20,7 +20,7 @@ const AdminPractice = () => {
 
 
     useEffect(() => {
-        dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}`));
+        dispatch(fetchChallenges(`?category=${selectedCategory}&title=${searchCategory}&type=Practice`));
     }, [dispatch, selectedCategory, searchCategory]);
 
     const openEditChallengeModal = challenge => {

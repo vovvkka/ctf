@@ -18,12 +18,14 @@ const Modal = ({
                    isEdit,
                    isDeleteTeam,
                    teamId,
-                   createNewCompetition
+                   createNewCompetition,
+                   competition
                }) => {
     const dispatch = useDispatch();
     const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
 
     const [challengeData, setChallengeData] = useState({
+        competition: "",
         title: "",
         category: "First-Timers",
         description: "",
@@ -128,6 +130,11 @@ const Modal = ({
         }
 
         if (createNewChallenge) {
+            if (!!competition) {
+                challengeData.type = "Competition";
+                challengeData.competition = competition;
+            }
+
             const formData = new FormData();
 
             Object.keys(challengeData).forEach((key) => {

@@ -22,10 +22,12 @@ const upload = multer({storage});
 
 router.get('/', async (req, res) => {
     try {
-        const {category, title} = req.query;
+        const {category, title, type, competition} = req.query;
         const query = {};
 
         if (category) query.category = category;
+        if (type) query.type = type;
+        if (competition) query.competition = competition;
         if (title) query.title = { $regex: title, $options: 'i' };
 
         const challenges = await Challenge.find(query).sort({createdAt: "desc"});
@@ -37,7 +39,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) => {
         try {
-            const {competition, title, category, description, points, result, hint1, hint2, hint3} = req.body;
+            const {competition, title, category, description, points, type, result, hint1, hint2, hint3} = req.body;
 
             const challengeData = {
                 competition,
@@ -45,7 +47,7 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
                 category,
                 description,
                 points,
-                type: "Practice",
+                type: type || "Practice",
                 file: null,
                 result,
                 hint1,
@@ -107,14 +109,15 @@ router.post('/:id', auth, async (req, res) => {
 
 router.put('/:id', auth, permit('admin'), upload.single('file'), async (req, res) => {
         try {
-            const {title, category, description, points, result, hint1, hint2, hint3} = req.body;
+            const {competition, title, category, description, points, type, result, hint1, hint2, hint3} = req.body;
 
             const challengeData = {
+                competition,
                 title,
                 category,
                 description,
                 points,
-                type: "Practice",
+                type: type || "Practice",
                 file: null,
                 result,
                 hint1,
