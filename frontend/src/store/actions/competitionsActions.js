@@ -3,7 +3,11 @@ import {message} from "antd";
 import {
     createCompetitionFailure,
     createCompetitionRequest,
-    createCompetitionSuccess, fetchCompetitionsFailure, fetchCompetitionsRequest, fetchCompetitionsSuccess
+    createCompetitionSuccess,
+    fetchCompetitionsFailure,
+    fetchCompetitionsRequest,
+    fetchCompetitionsSuccess, fetchOneCompetitionFailure,
+    fetchOneCompetitionRequest, fetchOneCompetitionSuccess
 } from "../slices/competitionsSlice";
 
 export const fetchCompetitions = () => {
@@ -11,12 +15,25 @@ export const fetchCompetitions = () => {
         try {
             dispatch(fetchCompetitionsRequest());
 
-
             const response = await axiosApi.get('/competitions');
 
             dispatch(fetchCompetitionsSuccess(response.data));
         } catch (e) {
             dispatch(fetchCompetitionsFailure(e));
+        }
+    };
+};
+
+export const fetchOneCompetition = id => {
+    return async dispatch => {
+        try {
+            dispatch(fetchOneCompetitionRequest());
+
+            const response = await axiosApi.get('/competitions/' + id);
+
+            dispatch(fetchOneCompetitionSuccess(response.data));
+        } catch (e) {
+            dispatch(fetchOneCompetitionFailure(e));
         }
     };
 };

@@ -1,0 +1,39 @@
+@import "../variables";
+
+.competition {
+  &__page {
+    background: #76A0E0;
+    padding: 20px 50px;
+    color: $white;
+
+    &-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__title {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      letter-spacing: 0.8px;
+      font-size: 14px;
+      color: #030229;
+      padding-bottom: 8px;
+      padding-left: 7px;
+    }
+
+    &-input {
+      max-width: 400px;
+      box-shadow: 0 0 0 30px #ffffff inset !important;
+      border: 1px solid #14387940;
+      padding: 15px 15px;
+      border-radius: 8px;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+  }
+}

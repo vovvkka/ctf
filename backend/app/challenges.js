@@ -37,9 +37,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) => {
         try {
-            const {title, category, description, points, result, hint1, hint2, hint3} = req.body;
+            const {competition, title, category, description, points, result, hint1, hint2, hint3} = req.body;
 
             const challengeData = {
+                competition,
                 title,
                 category,
                 description,

@@ -4,6 +4,7 @@ const name = 'competitions';
 
 export const initialState = {
     competitions: [],
+    competition: null,
     loading: false,
     error: null
 };
@@ -21,6 +22,18 @@ const competitionsSlice = createSlice({
             state.competitions = action.payload;
         },
         fetchCompetitionsFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        fetchOneCompetitionRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchOneCompetitionSuccess(state, action) {
+            state.loading = false;
+            state.competition = action.payload;
+        },
+        fetchOneCompetitionFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
@@ -43,6 +56,9 @@ export const {
     fetchCompetitionsRequest,
     fetchCompetitionsSuccess,
     fetchCompetitionsFailure,
+    fetchOneCompetitionRequest,
+    fetchOneCompetitionSuccess,
+    fetchOneCompetitionFailure,
     createCompetitionRequest,
     createCompetitionSuccess,
     createCompetitionFailure,

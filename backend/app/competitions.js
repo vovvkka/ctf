@@ -13,6 +13,20 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const competition = await Competition.findById(req.params.id);
+
+        if (!competition.isStarted && req.user.role === "team") {
+            return res.status(403).send({message: "You're dont have rights!"})
+        }
+
+        res.send(competition);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.post('/', auth, permit('admin'), async (req, res) => {
         try {
             const {title, maxTeams} = req.body;

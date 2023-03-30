@@ -17,8 +17,8 @@ const CompetitionCard = ({competition}) => {
     };
 
     return (
-        <div className="competition" onClick={redirectTo}>
-            <div className="competition__top">
+        <div className="competition-card" onClick={redirectTo}>
+            <div className="competition-card__top">
                 <span>Cryptography</span>
                 <span>| {competition.maxTeams} {competition.maxTeams > 1 ? "teams" : "team"} </span>
 
@@ -27,7 +27,7 @@ const CompetitionCard = ({competition}) => {
                 </span>
             </div>
 
-            <p className="competition__title">
+            <p className="competition-card__title">
                 {competition.title}
             </p>
         </div>
