@@ -19,7 +19,8 @@ const Modal = ({
                    isDeleteTeam,
                    teamId,
                    createNewCompetition,
-                   competition
+                   competitionId,
+                   wantToStart,
                }) => {
     const dispatch = useDispatch();
     const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
@@ -130,9 +131,9 @@ const Modal = ({
         }
 
         if (createNewChallenge) {
-            if (!!competition) {
+            if (!!competitionId) {
                 challengeData.type = "Competition";
-                challengeData.competition = competition;
+                challengeData.competition = competitionId;
             }
 
             const formData = new FormData();

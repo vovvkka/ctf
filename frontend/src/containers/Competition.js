@@ -12,10 +12,11 @@ const Competition = ({match}) => {
     const competition = useSelector(state => state.competitions.competition);
 
     const [title, setTitle] = useState("");
+    const [challenge, setChallenge] = useState();
     const [isChallengeTask, setIsChallengeTask] = useState(false);
     const [createChallenge, setCreateChallenge] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [challenge, setChallenge] = useState();
+    const [wantToStart, setWantToStart] = useState(false);
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -62,12 +63,14 @@ const Competition = ({match}) => {
                 isChallenge={isChallengeTask}
                 cData={challenge}
                 isEdit={isEdit}
-                competition={match.params.id}
+                competitionId={match.params.id}
+                wantToStart={wantToStart}
                 closed={() => {
                     setShow(false);
                     setCreateChallenge(false);
                     setIsEdit(false);
-                    setIsChallengeTask(false)
+                    setIsChallengeTask(false);
+                    setWantToStart(false);
                 }}
             />
 
