@@ -52,7 +52,19 @@ const MultiUsers = new Schema({
             message: 'Invalid e-mail address'
         }]
     },
-})
+});
+
+const Competitions = new Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    points: {
+        type: Number,
+        required: true,
+        default: 1
+    }
+});
 
 const UserSchema = new Schema({
     users: [MultiUsers],
@@ -89,6 +101,7 @@ const UserSchema = new Schema({
         required: true,
         default: 0
     },
+    competitionsPoints: [Competitions],
     token: {
         type: String,
         required: true,

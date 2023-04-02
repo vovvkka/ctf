@@ -66,6 +66,8 @@ const Competition = ({match}) => {
                 closed={() => {
                     setShow(false);
                     setCreateChallenge(false);
+                    setIsEdit(false);
+                    setIsChallengeTask(false)
                 }}
             />
 

@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res) => {
         if (category) query.category = category;
         if (type) query.type = type;
         if (competition) query.competition = competition;
-        if (title) query.title = { $regex: title, $options: 'i' };
+        if (title) query.title = {$regex: title, $options: 'i'};
 
 
         if (type && competition) {
@@ -52,7 +52,6 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
             const {competition, title, category, description, points, type, result, hint1, hint2, hint3} = req.body;
 
             const challengeData = {
-                competition,
                 title,
                 category,
                 description,
@@ -64,6 +63,8 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
                 hint2,
                 hint3
             };
+
+            if (competition) challengeData.competition = competition;
 
             if (req.file) {
                 challengeData.file = 'uploads/' + req.file.filename;
@@ -82,7 +83,9 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
 router.post('/:id', auth, async (req, res) => {
         try {
             const {result} = req.body;
+            const { _id } = req.user;
 
+            const user = await User.findById(_id);
             const challenge = await Challenge.findById(req.params.id);
 
             if (!challenge) {
@@ -93,9 +96,10 @@ router.post('/:id', auth, async (req, res) => {
                 return res.send({error: "Wrong answer!"});
             }
 
-            const user = await User.findById(req.user._id);
+            const challengeIdString = challenge._id.toString();
+            const hasSolved = user.solvedPracticeChallenges.includes(challengeIdString);
 
-            if (!user.solvedPracticeChallenges.find(c => c === challenge._id.toString())) {
+            if (!hasSolved && challenge.type === "Practice") {
                 user.practicePoints += challenge.points;
                 user.solvedPracticeChallenges.push(challenge._id);
                 await user.save({validateBeforeSave: false});
@@ -107,11 +111,30 @@ router.post('/:id', auth, async (req, res) => {
                 });
             }
 
+            if (!hasSolved && challenge.type === "Competition") {
+                user.solvedPracticeChallenges.push(challenge._id);
+
+                const competition = await Competition.findById(challenge.competition);
+                const title = competition.title;
+
+                const idxCompetition = user.competitionsPoints.findIndex(c => c.title === competition.title);
+
+                if (idxCompetition < 0) {
+                    user.competitionsPoints.push({title, points: challenge.points});
+                } else {
+                    user.competitionsPoints[idxCompetition].points += challenge.points;
+                }
+
+                user.save({validateBeforeSave: false});
+                return res.send({message: "Congratulations! Your answer is correct!"});
+            }
+
             res.send({
                 message: "Congratulations! Your answer is correct!",
                 points: 0
             });
         } catch (e) {
+            console.log(e);
             return res.status(400).send(e.message);
         }
     }
@@ -156,11 +179,11 @@ router.delete('/:id', auth, permit('admin'), async (req, res) => {
         const challenge = await Challenge.findById(req.params.id);
 
         if (!challenge) {
-            return res.status(404).send({ message: 'Challenge not found!' });
+            return res.status(404).send({message: 'Challenge not found!'});
         }
 
         await Challenge.deleteOne(challenge);
-        res.send({ message: 'Challenge deleted successfully!' });
+        res.send({message: 'Challenge deleted successfully!'});
     } catch (e) {
         res.status(400).send(e);
     }

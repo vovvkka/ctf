@@ -104,7 +104,6 @@ export const checkAccuracyChallenge = (id, result) => {
 
             message.success(response.data.message).then(r => r);
 
-
             await dispatch(checkResultSuccess(response.data));
             await dispatch(addPracticeScore(response.data));
 
