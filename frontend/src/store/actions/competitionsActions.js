@@ -9,6 +9,7 @@ import {
     fetchCompetitionsSuccess, fetchOneCompetitionFailure,
     fetchOneCompetitionRequest, fetchOneCompetitionSuccess
 } from "../slices/competitionsSlice";
+import {historyPush} from "./historyActions";
 
 export const fetchCompetitions = () => {
     return async dispatch => {
@@ -33,6 +34,10 @@ export const fetchOneCompetition = id => {
 
             dispatch(fetchOneCompetitionSuccess(response.data));
         } catch (e) {
+            if (e.response.status === 403 || e.response.status === 500) {
+                dispatch(historyPush("/"));
+            }
+
             dispatch(fetchOneCompetitionFailure(e));
         }
     };

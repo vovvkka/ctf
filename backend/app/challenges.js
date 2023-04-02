@@ -8,6 +8,7 @@ const config = require('../config');
 const {nanoid} = require('nanoid');
 const Challenge = require("../models/Challenge");
 const User = require("../models/User");
+const Competition = require("../models/Competition");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,7 +21,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const {category, title, type, competition} = req.query;
         const query = {};
@@ -29,6 +30,15 @@ router.get('/', async (req, res) => {
         if (type) query.type = type;
         if (competition) query.competition = competition;
         if (title) query.title = { $regex: title, $options: 'i' };
+
+
+        if (type && competition) {
+            const comp = await Competition.findById(competition);
+
+            if (!comp.isStarted && req.user.role === "team") {
+                return res.status(403).send({message: "You're dont have rights!"});
+            }
+        }
 
         const challenges = await Challenge.find(query).sort({createdAt: "desc"});
         res.send(challenges);
