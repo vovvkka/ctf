@@ -3,7 +3,7 @@ import {message} from "antd";
 import {
     createCompetitionFailure,
     createCompetitionRequest,
-    createCompetitionSuccess,
+    createCompetitionSuccess, editCompetitionFailure, editCompetitionRequest, editCompetitionSuccess,
     fetchCompetitionsFailure,
     fetchCompetitionsRequest,
     fetchCompetitionsSuccess, fetchOneCompetitionFailure,
@@ -58,6 +58,30 @@ export const createCompetition = competitionData => {
                 throw e;
             } else {
                 dispatch(createCompetitionFailure({global: 'No internet'}));
+                throw e;
+            }
+        }
+    };
+};
+
+export const editCompetition = (id, competitionData) => {
+    return async dispatch => {
+        try {
+            dispatch(editCompetitionRequest());
+
+            const response = await axiosApi.put('/competitions/' + id, competitionData);
+
+            dispatch(editCompetitionSuccess(response.data));
+
+            if (typeof response.data.isStarted === "boolean") {
+                message.success(response.data.message);
+            }
+        } catch (e) {
+            if (e.response && e.response.data) {
+                dispatch(editCompetitionFailure(e.response.data));
+                throw e;
+            } else {
+                dispatch(editCompetitionFailure({global: 'No internet'}));
                 throw e;
             }
         }

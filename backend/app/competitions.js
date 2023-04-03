@@ -52,13 +52,16 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
 
             const challengeData = {title};
 
-            if (isStarted) challengeData.isStarted = isStarted;
+            if (typeof isStarted === "boolean") challengeData.isStarted = isStarted;
             if (password) challengeData.password = password;
 
-            const updateCompetition = await Competition.findByIdAndUpdate(
-                req.params.id,
-                challengeData
-            );
+            const updateCompetition = await Competition.findByIdAndUpdate(req.params.id, challengeData);
+
+            if (isStarted && password) {
+                return res.send({message: "Competition started!", isStarted: Boolean(isStarted)});
+            } else if (typeof isStarted === "boolean") {
+                return res.send({message: "Competition ended!", isStarted: Boolean(isStarted)});
+            }
 
             res.send(updateCompetition);
         } catch (e) {

@@ -7,7 +7,7 @@ import {checkAccuracyChallenge, createChallenge, editChallenge} from "../../../s
 import {apiUrl} from "../../../config";
 import fileIcon from "../../../assets/svg/file-icon.svg";
 import {deleteTeam} from "../../../store/actions/usersActions";
-import {createCompetition} from "../../../store/actions/competitionsActions";
+import {createCompetition, editCompetition} from "../../../store/actions/competitionsActions";
 
 const Modal = ({
                    show,
@@ -21,6 +21,7 @@ const Modal = ({
                    createNewCompetition,
                    competitionId,
                    wantToStart,
+                   wantToEnd
                }) => {
     const dispatch = useDispatch();
     const solved = useSelector(state => state.users.user?.solvedPracticeChallenges);
@@ -42,6 +43,7 @@ const Modal = ({
     const [competitionData, setCompetitionData] = useState({
         title: "",
         maxTeams: 1,
+        password: "",
     });
 
     const [hint1, setHint1] = useState(false);
@@ -153,6 +155,19 @@ const Modal = ({
 
         if (createNewCompetition) {
             await dispatch(createCompetition({...competitionData}));
+            onCloseModal();
+        }
+
+        if (wantToStart) {
+            await dispatch(editCompetition(competitionId, {
+                password: competitionData.password,
+                isStarted: true
+            }));
+            onCloseModal();
+        }
+
+        if (wantToEnd) {
+            await dispatch(editCompetition(competitionId, {isStarted: false}));
             onCloseModal();
         }
     };
@@ -383,6 +398,35 @@ const Modal = ({
         );
     }
 
+    if (wantToStart) {
+        children = (
+            <div className="modal__body modal__body-password">
+                <p className="modal__set-password">Please set password and don’t forget to share it with players</p>
+
+                <div className="modal__input-block modal__input-block-password">
+                    <input
+                        name="password"
+                        className="modal__input modal__input-password"
+                        value={competitionData.password}
+                        onChange={inputCompetitionChangeHandler}
+                        maxLength={10}
+                        required
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    if (wantToEnd) {
+        children = (
+            <div className="modal__body modal__body-alert">
+                <p className="modal__alert-text">
+                    Are you sure you want to end the competition?
+                </p>
+            </div>
+        );
+    }
+
     if (isDeleteTeam) {
         children = (
             <div className="modal__body modal__body-alert">
@@ -390,13 +434,14 @@ const Modal = ({
                     Are you sure you want to delete the team?
                 </p>
             </div>
-        )
+        );
     }
 
     const classes = ["modal"];
 
-    if (isDeleteTeam) classes.push("modal__delete-team");
+    if (isDeleteTeam || wantToEnd) classes.push("modal__delete-team");
     if (createNewCompetition) classes.push("modal__create-competition");
+    if (wantToStart) classes.push("modal__want-to-start")
 
     return (
         <>
@@ -415,6 +460,7 @@ const Modal = ({
                             {isChallenge && `${cData.title}`}
                             {isDeleteTeam && "Confirm the action"}
                             {createNewCompetition && "Create new competition"}
+                            {(wantToStart || wantToEnd) && "Manage access"}
                         </h2>
                     </div>
 
@@ -460,7 +506,7 @@ const Modal = ({
                         }
 
                         {
-                            isDeleteTeam &&
+                            (isDeleteTeam || wantToEnd) &&
                             <div className="modal__buttons">
                                 <button
                                     className="modal__confirm"
@@ -495,6 +541,16 @@ const Modal = ({
                                     Cancel
                                 </button>
                             </div>
+                        }
+
+                        {
+                            wantToStart &&
+                            <button
+                                className="modal__start"
+                                type="submit"
+                            >
+                                Start the competition
+                            </button>
                         }
                     </div>
                 </form>

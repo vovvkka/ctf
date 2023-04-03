@@ -17,6 +17,7 @@ const Competition = ({match}) => {
     const [createChallenge, setCreateChallenge] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [wantToStart, setWantToStart] = useState(false);
+    const [wantToEnd, setWantToEnd] = useState(false);
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -55,6 +56,16 @@ const Competition = ({match}) => {
         setShow(true);
     };
 
+    const openSetPassword = e => {
+        if (e.target.innerText === "Start the competition") {
+            setWantToStart(true);
+        } else {
+            setWantToEnd(true);
+        }
+
+        setShow(true);
+    };
+
     return (
         <>
             <Modal
@@ -65,12 +76,14 @@ const Competition = ({match}) => {
                 isEdit={isEdit}
                 competitionId={match.params.id}
                 wantToStart={wantToStart}
+                wantToEnd={wantToEnd}
                 closed={() => {
                     setShow(false);
                     setCreateChallenge(false);
                     setIsEdit(false);
                     setIsChallengeTask(false);
                     setWantToStart(false);
+                    setWantToEnd(false);
                 }}
             />
 
@@ -118,7 +131,7 @@ const Competition = ({match}) => {
                                 >
                                     Add new challenge
                                 </button>
-                                <button className={classesOfButton.join(" ")}>
+                                <button className={classesOfButton.join(" ")} onClick={openSetPassword}>
                                     {!competition?.isStarted && "Start the competition"}
                                     {competition?.isStarted && "End the competition"}
                                 </button>
@@ -131,7 +144,7 @@ const Competition = ({match}) => {
                             <ChallengeCard
                                 key={c._id}
                                 challenge={c}
-                                isAdmin
+                                isAdmin={user.role === "admin"}
                                 onOpenEditModal={openEditChallengeModal}
                                 onOpenChallenge={openChallenge}
                             />
