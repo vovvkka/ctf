@@ -3,11 +3,17 @@ import {message} from "antd";
 import {
     createCompetitionFailure,
     createCompetitionRequest,
-    createCompetitionSuccess, editCompetitionFailure, editCompetitionRequest, editCompetitionSuccess,
+    createCompetitionSuccess,
+    editCompetitionFailure,
+    editCompetitionRequest,
+    editCompetitionSuccess, enterCompetitionFailure,
+    enterCompetitionRequest, enterCompetitionSuccess,
     fetchCompetitionsFailure,
     fetchCompetitionsRequest,
-    fetchCompetitionsSuccess, fetchOneCompetitionFailure,
-    fetchOneCompetitionRequest, fetchOneCompetitionSuccess
+    fetchCompetitionsSuccess,
+    fetchOneCompetitionFailure,
+    fetchOneCompetitionRequest,
+    fetchOneCompetitionSuccess
 } from "../slices/competitionsSlice";
 import {historyPush} from "./historyActions";
 
@@ -84,6 +90,23 @@ export const editCompetition = (id, competitionData) => {
                 dispatch(editCompetitionFailure({global: 'No internet'}));
                 throw e;
             }
+        }
+    };
+};
+
+export const enterCompetition = password => {
+    return async dispatch => {
+        try {
+            dispatch(enterCompetitionRequest());
+
+            const response = await axiosApi.post('/competitions/' + password);
+
+            message.success(response.data.message);
+            dispatch(enterCompetitionSuccess(response.data));
+            dispatch(historyPush("/competitions/" + response.data.id));
+        } catch (e) {
+            message.error(e.response.data.message);
+            dispatch(enterCompetitionFailure(e));
         }
     };
 };

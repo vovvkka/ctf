@@ -46,6 +46,28 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     }
 );
 
+router.post('/:password', auth, async (req, res) => {
+        try {
+            const { password } = req.params;
+
+           const competition = await Competition.findOne({password});
+
+           if (!competition || !competition.isStarted) {
+               return res.status(404).send({message: "Wrong password or the competition hasn't started yet"});
+           }
+
+           if (competition && competition.isStarted) {
+               return res.send({
+                   message: "You have successfully logged the competition!",
+                   id: competition._id
+               });
+           }
+        } catch (e) {
+            res.status(400).send(e);
+        }
+    }
+);
+
 router.put('/:id', auth, permit('admin'), async (req, res) => {
         try {
             const {title, isStarted, password} = req.body;

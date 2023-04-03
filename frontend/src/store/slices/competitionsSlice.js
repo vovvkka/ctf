@@ -61,6 +61,17 @@ const competitionsSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        enterCompetitionRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        enterCompetitionSuccess(state) {
+            state.loading = false;
+        },
+        enterCompetitionFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
@@ -76,7 +87,10 @@ export const {
     createCompetitionFailure,
     editCompetitionRequest,
     editCompetitionSuccess,
-    editCompetitionFailure
+    editCompetitionFailure,
+    enterCompetitionRequest,
+    enterCompetitionSuccess,
+    enterCompetitionFailure
 } = competitionsSlice.actions;
 
 export default competitionsSlice;

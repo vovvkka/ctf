@@ -11,6 +11,7 @@ import Practice from "./containers/Practice";
 import ScoreBoard from "./containers/ScoreBoard";
 import AdminCompetitions from "./containers/AdminCompetitions";
 import Competition from "./containers/Competition";
+import EnterCompetition from "./containers/EnterCompetition";
 
 const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
     return isAllowed ? <Route {...props} /> : <Redirect to="/" />;
@@ -38,6 +39,14 @@ const App = () => {
                 <ProtectedRoute
                     path="/competitions/:id"
                     component={Competition}
+                    isAllowed={user}
+                    redirectTo="/"
+                    exact
+                />
+
+                <ProtectedRoute
+                    path="/enter-competition"
+                    component={EnterCompetition}
                     isAllowed={user}
                     redirectTo="/"
                     exact
