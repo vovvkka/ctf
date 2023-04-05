@@ -1,0 +1,35 @@
+version: '3'
+services:
+  ctf-backend:
+    build: ./backend
+    image: vovvkka/ctf:backend2.0
+    depends_on:
+      - mongodb
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - public_images:/src/app/public
+    environment:
+      DB_HOST: mongodb
+
+  ctf-frontend:
+    build:
+      context: ./frontend
+      args:
+        api_url: "http://localhost:8000"
+    image: vovvkka/ctf:frontend2.0
+    depends_on:
+      - ctf-backend
+    restart: always
+    ports:
+      - "80:80"
+
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  public_images:
+  mongo_data:
