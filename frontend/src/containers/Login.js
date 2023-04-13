@@ -25,7 +25,7 @@ const Login = () => {
     };
 
     return (
-        <form autoComplete="off" onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
             <div className="login">
                 <div className="login__page">
                     <div></div>
@@ -44,7 +44,6 @@ const Login = () => {
                             <input
                                 type="email"
                                 name="email"
-                                autoComplete="off"
                                 className="login__input"
                                 value={user.email}
                                 onChange={inputUserChangeHandler}
@@ -57,7 +56,6 @@ const Login = () => {
                                 <input
                                     type={isShow ? "text" : "password"}
                                     name="password"
-                                    autoComplete="off"
                                     className="login__input"
                                     value={user.password}
                                     onChange={inputUserChangeHandler}

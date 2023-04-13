@@ -2,12 +2,10 @@ version: '3'
 services:
   ctf-backend:
     build: ./backend
-    image: vovvkka/ctf:backend2.0
+    image: vovvkka/ctf:backend
     depends_on:
       - mongodb
     restart: always
-    ports:
-      - "8000:8000"
     volumes:
       - public_images:/src/app/public
     environment:
@@ -17,16 +15,28 @@ services:
     build:
       context: ./frontend
       args:
-        api_url: "http://localhost:8000"
-    image: vovvkka/ctf:frontend2.0
+        api_url: "/api"
+    image: vovvkka/ctf:frontend
     depends_on:
       - ctf-backend
     restart: always
     ports:
-      - "80:80"
+      - "9898:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
   mongodb:
-    image: mongo
+    image: mongo:4.4.18
+    restart: on-failure
     volumes:
       - mongo_data:/data/db
 
