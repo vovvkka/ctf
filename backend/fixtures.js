@@ -14,11 +14,21 @@ const run = async () => {
     }
 
     await User.create({
-        users: [{username: "Vova", lastname: "Baltiev", email: "v.golem228@gmail.com"}],
+        users: [{username: "Admin", lastname: "Admin", email: "v.golem228@gmail.com"}],
         email: 'v.golem228@gmail.com',
         teamName: "Sharks",
-        password: "123123",
+        password: "admin",
         practicePoints: 5,
+        role: 'admin',
+        token: nanoid(),
+        competitionPoints: [],
+        solvedPracticeChallenges: [],
+    }, {
+        users: [{username: "Muzaffar", lastname: "Tursunbaev", email: "v.golem228@gmail.com"}],
+        email: 'admin@gmail.com',
+        teamName: "Admin",
+        password: "123123",
+        practicePoints: 1,
         role: 'admin',
         token: nanoid(),
         competitionPoints: [],
