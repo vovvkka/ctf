@@ -90,6 +90,9 @@ const usersSlice = createSlice({
                 state.user.solvedPracticeChallenges.push(challengeId);
             }
         },
+        clearLoginErrors(state) {
+            state.loginError = null
+        },
         // forgotPasswordRequest(state) {
         //     state.forgotLoading = true;
         //     state.forgotError = null;
@@ -131,7 +134,8 @@ export const {
     deleteTeamRequest,
     deleteTeamSuccess,
     deleteTeamFailure,
-    addPracticeScore
+    addPracticeScore,
+    clearLoginErrors
 } = usersSlice.actions;
 
 export default usersSlice;

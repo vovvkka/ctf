@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import close from "../assets/close-eye.png";
 import open from "../assets/open-eye.png";
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "../store/actions/usersActions";
+import {clearLoginErrors} from "../store/slices/usersSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
+    const error = useSelector(state => state.users.loginError);
 
     const [user, setUser] = useState({
         email: '',
@@ -24,6 +26,12 @@ const Login = () => {
         setUser(prev => ({...prev, [name]: value}));
     };
 
+    useEffect(() => {
+        return () => {
+            dispatch(clearLoginErrors());
+        }
+    }, [dispatch]);
+
     return (
         <form onSubmit={onSubmit}>
             <div className="login">
@@ -31,7 +39,7 @@ const Login = () => {
                     <div></div>
                     <p className="login__title">Login</p>
                     <Link to="/register">
-                        <button className="login__switch-page-btn">
+                        <button type="button" className="login__switch-page-btn">
                             Sign Up
                         </button>
                     </Link>
@@ -69,6 +77,8 @@ const Login = () => {
                                 />
                             </div>
                         </div>
+
+                        {error && <p className="login__error">{error?.error}</p>}
 
                         <button
                             className="login__accept"

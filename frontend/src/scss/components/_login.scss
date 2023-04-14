@@ -67,6 +67,13 @@
     }
   }
 
+  &__error {
+    color: #c04150;
+    font-size: 15px;
+    margin-left: 5px;
+    padding-top: 5px;
+  }
+
   &__accept {
     margin-top: 30px;
     width: 100%;
