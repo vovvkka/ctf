@@ -17,7 +17,7 @@ const run = async () => {
         users: [{username: "Admin", lastname: "Admin", email: "v.golem228@gmail.com"}],
         email: 'v.golem228@gmail.com',
         teamName: "Sharks",
-        password: "admin",
+        password: "admin1",
         practicePoints: 5,
         role: 'admin',
         token: nanoid(),
