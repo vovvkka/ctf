@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth');
 const permit = require('../middlewares/permit');
 const Competition = require("../models/Competition");
 
-router.get('/', auth, permit('admin'), async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const competitions = await Competition.find().sort({createdAt: "desc"});
         res.send(competitions);

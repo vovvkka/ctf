@@ -83,7 +83,7 @@ router.post('/', auth, permit('admin'), upload.single('file'), async (req, res) 
 router.post('/:id', auth, async (req, res) => {
         try {
             const {result} = req.body;
-            const { _id } = req.user;
+            const {_id} = req.user;
 
             const user = await User.findById(_id);
             const challenge = await Challenge.findById(req.params.id);
@@ -126,7 +126,10 @@ router.post('/:id', auth, async (req, res) => {
                 }
 
                 user.save({validateBeforeSave: false});
-                return res.send({message: "Congratulations! Your answer is correct!"});
+                return res.send({
+                    message: "Congratulations! Your answer is correct!",
+                    challengeId: challenge._id
+                });
             }
 
             res.send({

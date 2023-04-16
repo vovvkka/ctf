@@ -147,6 +147,7 @@ const Competition = ({match}) => {
                                 isAdmin={user.role === "admin"}
                                 onOpenEditModal={openEditChallengeModal}
                                 onOpenChallenge={openChallenge}
+                                compCard
                             />
                         )}
 

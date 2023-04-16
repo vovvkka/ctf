@@ -1,16 +1,30 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import progress from "../assets/svg/progress-tracker.svg";
 import ScoreTable from "../components/ScoreTable/ScoreTable";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUsers} from "../store/actions/usersActions";
+import {fetchCompetitions} from "../store/actions/competitionsActions";
 
 const ScoreBoard = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
+    const competitions = useSelector(state => state.competitions.competitions);
+    const [isCompetitionTab, setIsCompetitionTab] = useState(false);
+    const [currentName, setCurrentName] = useState("");
 
     useEffect(() => {
         dispatch(fetchUsers("?filter=score"));
-    }, [dispatch])
+        dispatch(fetchCompetitions());
+    }, [dispatch]);
+
+    const changeTab = name => {
+        const title = name.innerText;
+
+        if (title === "Practice") return setIsCompetitionTab(false);
+
+        setCurrentName(title);
+        setIsCompetitionTab(true);
+    };
 
     return (
         <div className="score-board">
@@ -31,7 +45,19 @@ const ScoreBoard = () => {
                     <p className="score-board__ranking-title">Ranking</p>
                 </div>
 
-                <ScoreTable users={users}/>
+                <div className="score-board__tabs">
+                    <li onClick={e => changeTab(e.target)}>Practice</li>
+
+                    {competitions.map(c => (
+                        <li key={c._id} onClick={e => changeTab(e.target)}>{c.title}</li>
+                    ))}
+                </div>
+
+                <ScoreTable
+                    users={users}
+                    isCompetitionTab={isCompetitionTab}
+                    competitionName={currentName}
+                />
             </div>
         </div>
     );

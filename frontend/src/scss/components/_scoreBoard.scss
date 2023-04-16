@@ -27,4 +27,28 @@
     margin-left: 5px;
     letter-spacing: 0.6px;
   }
+
+  &__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 30px;
+
+    li {
+      margin-right: 30px;
+      padding: 10px 30px;
+      background: #62abd3;
+      color: white;
+
+      font-size: 16px;
+      font-weight: 200;
+      letter-spacing: 1px;
+
+      transition: all 0.2s;
+
+      &:hover {
+        background: #3a81a9;
+        cursor: pointer;
+      }
+    }
+  }
 }

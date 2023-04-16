@@ -1,6 +1,7 @@
 import React from 'react';
 
-const ScoreTable = ({ users }) => {
+const ScoreTable = ({ users, isCompetitionTab, competitionName }) => {
+    const currentUsers = users?.filter(user => user.role !== "admin");
     return (
         <div className="table">
             <table>
@@ -13,12 +14,18 @@ const ScoreTable = ({ users }) => {
                 </thead>
                 <tbody>
                 {
-                    users?.length && users.map((user, idx) => {
-                        return user.role !== "admin" && (
+                    currentUsers?.length && currentUsers.map((user, idx) => {
+                        const competitionIdx = user.competitionsPoints.findIndex(comp => comp.title === competitionName);
+                        const comp = user.competitionsPoints[competitionIdx];
+
+                        // eslint-disable-next-line array-callback-return
+                        if (!comp && isCompetitionTab) return;
+
+                        return (
                             <tr key={user?._id} className="table__scoreboard">
                                 <td className="table__sm">{idx + 1}</td>
                                 <td className="table__s">{user?.teamName}</td>
-                                <td className="table__s">{user?.practicePoints}</td>
+                                <td className="table__s">{isCompetitionTab ? comp.points : user?.practicePoints}</td>
                             </tr>
                         );
                     })

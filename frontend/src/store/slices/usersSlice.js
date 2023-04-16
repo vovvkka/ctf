@@ -87,6 +87,7 @@ const usersSlice = createSlice({
             state.user.practicePoints += points;
 
             if (challengeId) {
+                console.log(challengeId);
                 state.user.solvedPracticeChallenges.push(challengeId);
             }
         },
