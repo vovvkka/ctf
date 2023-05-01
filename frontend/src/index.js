@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
+import {Router} from "react-router-dom";
+import history from './history';
+import './scss/app.scss';
+import {Provider} from "react-redux";
+import store from "./store/configureStore";
 
 const app = (
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
+    <Provider store={store}>
+        <Router history={history}>
+            <App/>
+        </Router>
+    </Provider>
 );
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
