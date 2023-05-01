@@ -10,7 +10,7 @@ const ChallengeCard = ({isAdmin, challenge, onOpenEditModal, onOpenChallenge}) =
     return (
         <div className="challenge" onClick={() => onOpenChallenge(challenge)}>
             <div className="challenge__top">
-                <span>Cryptography</span>
+                <span>Challenge</span>
                 <span>| {challenge.points} {challenge.points > 1 ? "points" : "point"}</span>
                 {!isAdmin && solved.find(s => s === challenge._id) &&
                     <span className="challenge__solved">

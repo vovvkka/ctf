@@ -35,8 +35,12 @@ const Anonymous = () => {
                     key: '2',
                 },
                 {
-                    label: <p onClick={onLogout}>Logout</p>,
+                    label: <Link to="/admin-banners">Banners</Link>,
                     key: '3',
+                },
+                {
+                    label: <p onClick={onLogout}>Logout</p>,
+                    key: '4',
                 }
             ]);
         } else {

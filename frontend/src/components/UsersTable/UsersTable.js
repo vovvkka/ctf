@@ -40,7 +40,8 @@ const UsersTable = ({userTable, users}) => {
                     <tbody>
                     {
                         users?.length && users.map(user => {
-                            return (
+
+                            return user.role !== "admin" && (
                                 <tr key={user?._id}>
                                     <td className="table__sm">{user?.email}</td>
                                     <td className="table__s">{user?.teamName}</td>

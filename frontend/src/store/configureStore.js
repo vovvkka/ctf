@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-// import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import {configureStore} from "@reduxjs/toolkit";
 import axiosApi from "../axiosApi";
 import thunk from "redux-thunk";
@@ -7,11 +6,13 @@ import usersSlice from "./slices/usersSlice";
 import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import challengesSlice from "./slices/challengesSlice";
 import competitionsSlice from "./slices/competitionsSlice";
+import bannersSlice from "./slices/bannersSlice";
 
 const rootReducer = combineReducers({
     users: usersSlice.reducer,
     challenges: challengesSlice.reducer,
     competitions: competitionsSlice.reducer,
+    banners: bannersSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
